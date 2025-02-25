@@ -9,5 +9,4 @@ public class AigmRouterApplication {
     public static void main(String[] args) {
         SpringApplication.run(AigmRouterApplication.class, args);
     }
-
 }
