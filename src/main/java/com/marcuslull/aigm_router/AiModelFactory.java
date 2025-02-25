@@ -49,6 +49,24 @@ public class AiModelFactory {
                             .defaultSystem(Prompts.generalSystemPrompt + Prompts.combatSystemPrompt)
                             .build());
 
+            case ("handoff") -> new AiModel("handoff",
+                    ChatClient
+                            .builder(VertexAiGeminiChatModel
+                                    .builder()
+                                    .vertexAI(vertexAI)
+                                    .build())
+                            .defaultSystem(Prompts.handoffSystemPrompt)
+                            .build());
+
+            case ("continuity") -> new AiModel("continuity",
+                    ChatClient
+                            .builder(VertexAiGeminiChatModel
+                                    .builder()
+                                    .vertexAI(vertexAI)
+                                    .build())
+                            .defaultSystem(Prompts.continuitySystemPrompt)
+                            .build());
+
             default -> throw new RuntimeException(":(");
         };
     }
