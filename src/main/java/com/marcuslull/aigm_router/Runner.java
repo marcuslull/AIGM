@@ -26,25 +26,23 @@ public class Runner implements CommandLineRunner {
         aiModelMap.put("history", AiModelFactory.getAiModel("history"));
         aiModelMap.put("combat", AiModelFactory.getAiModel("combat"));
 
-        String response = "";
+        String response = "Start";
         ChatClient client = aiModelMap.get("narrative").chatClient();
 
         while (true) {
+
+            System.out.println("\nNew loop ---------------------------------------");
+            System.out.println("client = " + client);
+            System.out.println("response = " + response);
+
             if (isJson(response)) {
                 Thread.sleep(1000);
                 client = getClient(response);
                 response = send(client, response);
-
-                String mdRemoved = response.replaceAll("(?s)^\\s*```json(.*)```\\s*$", "$1");
-                JsonNode root = objectMapper.readTree(mdRemoved);
-                System.out.println("response = " + root.toPrettyString());
             }
             else {
-                System.out.println("Prompt:");
                 String line = scanner.nextLine();
                 response = send(client, line);
-
-                System.out.println("response = " + response);
             }
         }
     }
@@ -55,13 +53,8 @@ public class Runner implements CommandLineRunner {
 
     private ChatClient getClient(String response) throws JsonProcessingException {
         String mdRemoved = response.replaceAll("(?s)^\\s*```json(.*)```\\s*$", "$1");
-        JsonNode root = objectMapper.readTree(mdRemoved);
+        JsonNode root = objectMapper.readTree(mdRemoved.strip());
         String target = root.path("targetAI").asText().toLowerCase();
-        System.out.println();
-        System.out.println();
-        System.out.println("response = " + root.toPrettyString());
-        System.out.println("Switching to: " + target);
-
         return aiModelMap.get(target).chatClient();
     }
 
