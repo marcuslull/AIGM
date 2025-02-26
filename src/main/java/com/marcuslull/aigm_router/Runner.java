@@ -14,33 +14,33 @@ import java.util.Scanner;
 @Component
 public class Runner implements CommandLineRunner {
 
-    private final Map<String, AiModel> aiModelMap = new HashMap<>();
+    private final Map<String, ChatClient> aiModelMap = new HashMap<>();
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final Scanner scanner = new Scanner(System.in);
 
     @Override
     public void run(String... args) throws InterruptedException, JsonProcessingException {
 
-        aiModelMap.put("narrative", AiModelFactory.getAiModel("narrative"));
-        aiModelMap.put("social", AiModelFactory.getAiModel("social"));
-        aiModelMap.put("history", AiModelFactory.getAiModel("history"));
-        aiModelMap.put("combat", AiModelFactory.getAiModel("combat"));
-        aiModelMap.put("handoff", AiModelFactory.getAiModel("handoff"));
-        aiModelMap.put("continuity", AiModelFactory.getAiModel("continuity"));
+        aiModelMap.put("narrative", AiModelFactory.createAiModel("narrative"));
+        aiModelMap.put("social", AiModelFactory.createAiModel("social"));
+        aiModelMap.put("history", AiModelFactory.createAiModel("history"));
+        aiModelMap.put("combat", AiModelFactory.createAiModel("combat"));
+        aiModelMap.put("handoff", AiModelFactory.createAiModel("handoff"));
+        aiModelMap.put("continuity", AiModelFactory.createAiModel("continuity"));
 
         String response = "***USER MODE***";
-        ChatClient client = aiModelMap.get("narrative").chatClient();
-        ChatClient handoff = aiModelMap.get("handoff").chatClient();
-        ChatClient continuity = aiModelMap.get("continuity").chatClient();
+        ChatClient client = aiModelMap.get("narrative");
+        ChatClient handoff = aiModelMap.get("handoff");
+        ChatClient continuity = aiModelMap.get("continuity");
         String handoffContent = "";
         String continuityContent = "";
 
         while (true) {
 
             System.out.println("\nNew loop ---------------------------------------");
-            System.out.println("client = " + client);
-            System.out.println("continuityContent = " + continuityContent);
-            System.out.println("handoffContent = " + handoffContent);
+            System.out.println("current client = " + client);
+            System.out.println("continuityContent = " + continuityContent + " from: " + continuity);
+            System.out.println("handoffContent = " + handoffContent + " from: " + handoff);
             System.out.println("response = " + response);
 
             if (isJson(response)) {
@@ -58,8 +58,7 @@ public class Runner implements CommandLineRunner {
                 // START DEV MODE
                 if (line.equals("continuity") || line.equals("handoff")) {
                     ChatClient previousChatClient = client;
-                    // TODO: Grabbing the client from the map might be starting a new AI instance.
-                    client = aiModelMap.get(line).chatClient();
+                    client = aiModelMap.get(line);
                     response = "***DEV MODE***";
                     while(true) {
                         System.out.println("\nNew DEV loop ---------------------------------------");
@@ -90,7 +89,7 @@ public class Runner implements CommandLineRunner {
         String mdRemoved = response.replaceAll("(?s)^\\s*```json(.*)```\\s*$", "$1");
         JsonNode root = objectMapper.readTree(mdRemoved.strip());
         String target = root.path("targetAI").asText().toLowerCase();
-        return aiModelMap.get(target).chatClient();
+        return aiModelMap.get(target);
     }
 
     private boolean isJson(String response) {

@@ -2,70 +2,70 @@ package com.marcuslull.aigm_router;
 
 import com.google.cloud.vertexai.VertexAI;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AiModelFactory {
 
-    private static final VertexAI vertexAI = new VertexAI();
-
-    public static AiModel getAiModel(String type) {
+    public static ChatClient createAiModel(String type) {
 
         return switch (type) {
-            case ("narrative") -> new AiModel("narrative",
-                    ChatClient
-                            .builder(VertexAiGeminiChatModel
-                                    .builder()
-                                    .vertexAI(vertexAI)
-                                    .build())
-                            .defaultSystem(Prompts.generalSystemPrompt + Prompts.narrativeSystemPrompt)
-                            .build());
+            case ("narrative") -> ChatClient
+                    .builder(VertexAiGeminiChatModel
+                            .builder()
+                            .vertexAI(new VertexAI())
+                            .build())
+                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.narrativeSystemPrompt)
+                    .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+                    .build();
 
-            case ("social") -> new AiModel("social",
-                    ChatClient
-                            .builder(VertexAiGeminiChatModel
-                                    .builder()
-                                    .vertexAI(vertexAI)
-                                    .build())
-                            .defaultSystem(Prompts.generalSystemPrompt + Prompts.socialSystemPrompt)
-                            .build());
+            case ("social") -> ChatClient
+                    .builder(VertexAiGeminiChatModel
+                            .builder()
+                            .vertexAI(new VertexAI())
+                            .build())
+                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.socialSystemPrompt)
+                    .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+                    .build();
 
-            case ("history") -> new AiModel("history",
-                    ChatClient
-                            .builder(VertexAiGeminiChatModel
-                                    .builder()
-                                    .vertexAI(vertexAI)
-                                    .build())
-                            .defaultSystem(Prompts.generalSystemPrompt + Prompts.historySystemPrompt)
-                            .build());
+            case ("history") -> ChatClient
+                    .builder(VertexAiGeminiChatModel
+                            .builder()
+                            .vertexAI(new VertexAI())
+                            .build())
+                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.historySystemPrompt)
+                    .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+                    .build();
 
-            case ("combat") -> new AiModel("combat",
-                    ChatClient
-                            .builder(VertexAiGeminiChatModel
-                                    .builder()
-                                    .vertexAI(vertexAI)
-                                    .build())
-                            .defaultSystem(Prompts.generalSystemPrompt + Prompts.combatSystemPrompt)
-                            .build());
+            case ("combat") -> ChatClient
+                    .builder(VertexAiGeminiChatModel
+                            .builder()
+                            .vertexAI(new VertexAI())
+                            .build())
+                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.combatSystemPrompt)
+                    .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+                    .build();
 
-            case ("handoff") -> new AiModel("handoff",
-                    ChatClient
-                            .builder(VertexAiGeminiChatModel
-                                    .builder()
-                                    .vertexAI(vertexAI)
-                                    .build())
-                            .defaultSystem(Prompts.handoffSystemPrompt)
-                            .build());
+            case ("handoff") -> ChatClient
+                    .builder(VertexAiGeminiChatModel
+                            .builder()
+                            .vertexAI(new VertexAI())
+                            .build())
+                    .defaultSystem(Prompts.handoffSystemPrompt)
+                    .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+                    .build();
 
-            case ("continuity") -> new AiModel("continuity",
-                    ChatClient
-                            .builder(VertexAiGeminiChatModel
-                                    .builder()
-                                    .vertexAI(vertexAI)
-                                    .build())
-                            .defaultSystem(Prompts.continuitySystemPrompt)
-                            .build());
+            case ("continuity") -> ChatClient
+                    .builder(VertexAiGeminiChatModel
+                            .builder()
+                            .vertexAI(new VertexAI())
+                            .build())
+                    .defaultSystem(Prompts.continuitySystemPrompt)
+                    .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+                    .build();
 
             default -> throw new RuntimeException(":(");
         };
