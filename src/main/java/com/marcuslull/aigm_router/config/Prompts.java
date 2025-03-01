@@ -1,4 +1,4 @@
-package com.marcuslull.aigm_router;
+package com.marcuslull.aigm_router.config;
 
 public class Prompts {
 

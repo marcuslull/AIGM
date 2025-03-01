@@ -1,0 +1,13 @@
+package com.marcuslull.aigm_router.model;
+
+public enum DeferralType {
+    INFORMATION_REQUEST,
+    ACTION_VALIDATION,
+    EVENT_TRIGGER,
+    DIALOGUE_GENERATION,
+    COMBAT_RESOLUTION,
+    WORLD_STATE_UPDATE,
+    DIALOGUE_FEEDBACK,
+    FEEDBACK_REPORT,
+    OTHER
+}

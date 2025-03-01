@@ -1,4 +1,4 @@
-package com.marcuslull.aigm_router;
+package com.marcuslull.aigm_router.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

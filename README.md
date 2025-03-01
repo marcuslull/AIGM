@@ -26,11 +26,15 @@ To explore the feasibility of using AI, specifically large language models (LLMs
 *   Player-driven narrative: Empowering player choices and encouraging collaborative storytelling. [cite: 13]
 *   Distributed architecture: Using different models or applications for specific tasks (social interactions, combat, character management, etc.). [cite: 14]
 *   Virtual tabletop (VTT) integration: Leveraging VTT platforms with APIs for visual representation, interactive elements, and pre-built assets. [cite: 15]
+* **Vector Database Retrieval**: Incorporating the use of a vector database to retrieve relevant information from past game sessions, feedback, and world knowledge. This is intended to reduce prompt length and increase performance.
+* **Fine-tuning for Internalized Knowledge**: Using feedback and game data to fine-tune the AI models over time. The goal is to reduce the need to add information to system prompts, and improve general performance.
 
 ## Potential Issues and Mitigations
 
 *   Social dynamics: Remains a significant challenge. [cite: 16] Mitigations include scripting key social encounters, simplifying social models, and using rule-based social mechanics. [cite: 17]
 *   100% AI GM replacement: While challenging, it's closer to feasibility with the defined constraints. [cite: 18] Focus on structured adventures, limited scope, and continuous improvement. [cite: 19]
+* **Deferral Object Overhead**:  The system of using deferral objects for all AI communication has the potential to introduce significant overhead. This will need to be monitored and addressed as the system grows.
+* **Handoff and Continuity Overlap**: The roles of the Handoff and Continuity models have some overlap, specifically around evaluating communication. This relationship will need to be monitored, and refined to ensure they are complimentary and not conflicting.
 
 ## Technology and Platforms
 
@@ -38,6 +42,7 @@ To explore the feasibility of using AI, specifically large language models (LLMs
 *   Development stack: Spring Boot with Spring AI is a suitable framework for building the service, given your Java preference. [cite: 20]
 *   Cloud platform: Google Cloud's Vertex AI is likely the best platform for accessing and customizing Gemini. [cite: 21]
 *   VTT platforms: Foundry VTT and Roll20 are potential candidates for integration due to their APIs and community support. [cite: 22]
+* **Vector Database:** Potential vector databases include Chroma, Pinecone or a custom solution using Postgres.
 
 ## Distributed AI Architecture
 
@@ -48,6 +53,8 @@ The system will utilize a distributed architecture with specialized AIs handling
 *   Narrative AI: Manages the overall narrative flow, story events, and world-building. [cite: 25]
 *   History AI: Maintains a record of past events, lore, and character backgrounds. [cite: 26]
 *   Master AI: Oversees the entire system, handles complex or unexpected situations, and ensures consistency across all AIs. [cite: 27]
+*   **Continuity AI:** Monitors and evaluates all game communication, both deferral objects and player/GM text, to ensure narrative consistency and quality.
+*   **Handoff AI:** Analyzes all deferral objects to provide feedback and suggest improvements to inter-AI communication efficiency and effectiveness.
 
 ## AI Communication
 
@@ -57,6 +64,7 @@ AIs will communicate with each other through various methods, including:
 *   Message queue: For asynchronous communication and loose coupling. [cite: 29]
 *   Shared memory: For high-bandwidth or real-time data exchange. [cite: 30]
 *   Language-based communication: Using natural language or a custom language for inter-AI communication. [cite: 31]
+* **Deferral Objects**: All AI-to-AI communication is currently handled by Deferral Objects.
 
 ## State Package Handoff
 
@@ -145,13 +153,9 @@ This section details discussion around how players will communicate with and rec
       "sourceAI": "Your Role",
       "targetAI": "Target AI Role",
       "priority": "HIGH",
-      "data": {
-        //... deferral-specific data...
-      },
-      "context": {
-        //... relevant context... 
-      },
-      "relatedDeferralIds":, 
+      "data": {},
+      "context": {},
+      "relatedDeferralIds": [], 
       "confidenceScore": 0.8
     }
     ```
@@ -169,6 +173,7 @@ This section details discussion around how players will communicate with and rec
 *   `COMBAT_RESOLUTION`
 *   `WORLD_STATE_UPDATE`
 *   `DIALOGUE_FEEDBACK`
+*   `FEEDBACK_REPORT`
 *   `OTHER` (Use this type when none of the above fit. Include a description in the `data` field.)
 
 ### Priority Levels
@@ -199,3 +204,9 @@ This section details discussion around how players will communicate with and rec
 ## Overall
 
 While a perfect, fully autonomous AI GM for a long-term campaign is still a stretch, a more structured, rule-focused game with a shorter duration and pre-defined narrative is much more achievable. [cite: 68] By combining AI with human oversight, structured design, and integration with existing tools, you can create a compelling and engaging AI-powered RPG experience. [cite: 69]
+
+## Current Focus
+
+* **Hybrid Approach:** Begin focusing on implementing a vector database to store embeddings of game events, lore, and feedback. This will be tested by allowing the History AI to make queries against the vector database.
+* **Data Collection**: Continue collecting data, using handoff and continuity, for future training.
+* **Fine-tuning:** Future plans include leveraging the data collected to fine-tune the AI Models.

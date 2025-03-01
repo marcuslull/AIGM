@@ -1,6 +1,7 @@
-package com.marcuslull.aigm_router;
+package com.marcuslull.aigm_router.service;
 
 import com.google.cloud.vertexai.VertexAI;
+import com.marcuslull.aigm_router.config.Prompts;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
