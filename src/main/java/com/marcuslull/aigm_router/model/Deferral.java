@@ -12,10 +12,4 @@ public record Deferral(
         DeferralContext context,
         UUID[] relatedDeferralIds,
         double confidenceScore
-) implements Runnable {
-    @Override
-    public void run() {
-        // TODO figure out how to store existing AI instances
-        // TODO figure out how tooling sends and receives data.
-    }
-}
+){}

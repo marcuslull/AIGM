@@ -1,6 +1,6 @@
 package com.marcuslull.aigm_router.config;
 
-public class Prompts {
+public class PromptsSave {
 
     public static String generalSystemPrompt =
             """
@@ -12,8 +12,11 @@ public class Prompts {
             
             * All AI-to-AI communication must be conducted using the sendDeferral tool.
             * Deferral requests **MUST** be made using the sendDeferral tool.
-            * The content of deferral is not shared with the players.
+            * The content of DeferralObjects is not shared with the players.
             * Deferral requests should not be made to yourself.
+            
+            #### DeferralObjects structure:
+            {"deferralId":"UUID","deferralType":"deferralType","sourceAI":"yourName","targetAI":"targetGroupMember","priority":"priorityLevel","data":{"String data"},"context":{"String context"},"relatedDeferralIds":[],"confidenceScore":"a range from 0.0-1.0"}
             
             #### Source/Target AI ENUM:
             * ORATORIX - Manages the narrative, story, dialogue, social encounters and player/non-player characters.

@@ -2,55 +2,57 @@ package com.marcuslull.aigm_router.service;
 
 import com.google.cloud.vertexai.VertexAI;
 import com.marcuslull.aigm_router.config.Prompts;
+import com.marcuslull.aigm_router.model.AIModelType;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class AiModelFactory {
 
-    public static ChatClient createAiModel(String type) {
+    public ChatClient createAiModel(AIModelType type) {
 
         return switch (type) {
-            case ("narrative") -> ChatClient
+            case ORATORIX -> ChatClient
                     .builder(VertexAiGeminiChatModel
                             .builder()
                             .vertexAI(new VertexAI())
                             .build())
-                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.narrativeSystemPrompt)
+                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.oratorixSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .build();
 
-            case ("social") -> ChatClient
+            case ORBIS -> ChatClient
                     .builder(VertexAiGeminiChatModel
                             .builder()
                             .vertexAI(new VertexAI())
                             .build())
-                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.socialSystemPrompt)
+                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.orbisSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .build();
 
-            case ("history") -> ChatClient
+            case CHRONOS -> ChatClient
                     .builder(VertexAiGeminiChatModel
                             .builder()
                             .vertexAI(new VertexAI())
                             .build())
-                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.historySystemPrompt)
+                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.chronosSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .build();
 
-            case ("combat") -> ChatClient
+            case JUSTIVOR -> ChatClient
                     .builder(VertexAiGeminiChatModel
                             .builder()
                             .vertexAI(new VertexAI())
                             .build())
-                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.combatSystemPrompt)
+                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.justivorSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .build();
 
-            case ("handoff") -> ChatClient
+            case HANDOFF -> ChatClient
                     .builder(VertexAiGeminiChatModel
                             .builder()
                             .vertexAI(new VertexAI())
@@ -59,7 +61,7 @@ public class AiModelFactory {
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .build();
 
-            case ("continuity") -> ChatClient
+            case CONTINUITY -> ChatClient
                     .builder(VertexAiGeminiChatModel
                             .builder()
                             .vertexAI(new VertexAI())
