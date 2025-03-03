@@ -9,5 +9,6 @@ public enum DeferralType {
     WORLD_STATE_UPDATE,
     DIALOGUE_FEEDBACK,
     FEEDBACK_REPORT,
+    FURTHER_INFORMATION,
     OTHER
 }

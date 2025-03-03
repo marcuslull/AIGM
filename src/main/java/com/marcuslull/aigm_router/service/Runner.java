@@ -1,7 +1,6 @@
 package com.marcuslull.aigm_router.service;
 
 import com.marcuslull.aigm_router.model.AIModelType;
-import com.marcuslull.aigm_router.tooling.CommunicationTool;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -16,16 +15,14 @@ public class Runner implements CommandLineRunner {
     private final Scanner scanner = new Scanner(System.in);
     private final AiModelFactory aiModelFactory;
     private final ModelGroup modelGroup;
-    private final CommunicationTool communicationTool;
 
-    public Runner(AiModelFactory aiModelFactory, ModelGroup modelGroup, CommunicationTool communicationTool) {
+    public Runner(AiModelFactory aiModelFactory, ModelGroup modelGroup) {
         this.aiModelFactory = aiModelFactory;
         this.modelGroup = modelGroup;
-        this.communicationTool = communicationTool;
     }
 
     @Override
-    public void run(String... args) {
+    public void run(String... args) throws InterruptedException {
 
         modelGroup.addModel(ORATORIX, aiModelFactory.createAiModel(ORATORIX));
         modelGroup.addModel(ORBIS, aiModelFactory.createAiModel(ORBIS));
@@ -43,13 +40,10 @@ public class Runner implements CommandLineRunner {
 
         while (true) {
 
-            // TODO: figure out why models are not responding to a deferral. It could be they dont have access to the tooling.
-
-            System.out.println("Model Group: " + modelGroup);
             System.out.println("\nNew loop ---------------------------------------");
-            System.out.println("current client = " + client);
-            System.out.println("continuityContent = " + continuityContent + " from: " + continuity);
-            System.out.println("handoffContent = " + handoffContent + " from: " + handoff);
+//            System.out.println("current client = " + client);
+//            System.out.println("continuityContent = " + continuityContent + " from: " + continuity);
+//            System.out.println("handoffContent = " + handoffContent + " from: " + handoff);
             System.out.println("response = " + response);
 
             continuityContent = send(continuity, "GM: " + response); // DEV model
@@ -81,6 +75,6 @@ public class Runner implements CommandLineRunner {
     }
 
     private String send(ChatClient client, String prompt) {
-        return client.prompt().tools(communicationTool).user(prompt).call().chatResponse().toString();
+        return client.prompt().user(prompt).call().content();
     }
 }

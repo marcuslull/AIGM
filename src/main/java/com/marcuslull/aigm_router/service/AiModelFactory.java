@@ -3,6 +3,7 @@ package com.marcuslull.aigm_router.service;
 import com.google.cloud.vertexai.VertexAI;
 import com.marcuslull.aigm_router.config.Prompts;
 import com.marcuslull.aigm_router.model.AIModelType;
+import com.marcuslull.aigm_router.tooling.CommunicationTool;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
@@ -12,6 +13,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AiModelFactory {
+
+    private final CommunicationTool communicationTool;
+
+    public AiModelFactory(CommunicationTool communicationTool) {
+        this.communicationTool = communicationTool;
+    }
 
     public ChatClient createAiModel(AIModelType type) {
 
@@ -23,6 +30,7 @@ public class AiModelFactory {
                             .build())
                     .defaultSystem(Prompts.generalSystemPrompt + Prompts.oratorixSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+                    .defaultTools(communicationTool)
                     .build();
 
             case ORBIS -> ChatClient
@@ -32,6 +40,7 @@ public class AiModelFactory {
                             .build())
                     .defaultSystem(Prompts.generalSystemPrompt + Prompts.orbisSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+                    .defaultTools(communicationTool)
                     .build();
 
             case CHRONOS -> ChatClient
@@ -41,6 +50,7 @@ public class AiModelFactory {
                             .build())
                     .defaultSystem(Prompts.generalSystemPrompt + Prompts.chronosSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+                    .defaultTools(communicationTool)
                     .build();
 
             case JUSTIVOR -> ChatClient
@@ -50,6 +60,7 @@ public class AiModelFactory {
                             .build())
                     .defaultSystem(Prompts.generalSystemPrompt + Prompts.justivorSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+                    .defaultTools(communicationTool)
                     .build();
 
             case HANDOFF -> ChatClient
