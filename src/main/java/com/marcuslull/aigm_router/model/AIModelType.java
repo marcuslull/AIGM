@@ -5,8 +5,7 @@ public enum AIModelType {
     CHRONOS("chronos"),
     ORBIS("orbis"),
     JUSTIVOR("justivor"),
-    CONTINUITY("continuity"),
-    HANDOFF("handoff");
+    CONTINUITY("continuity");
 
     private final String stringName;
 

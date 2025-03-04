@@ -63,15 +63,6 @@ public class AiModelFactory {
                     .defaultTools(communicationTool)
                     .build();
 
-            case HANDOFF -> ChatClient
-                    .builder(VertexAiGeminiChatModel
-                            .builder()
-                            .vertexAI(new VertexAI())
-                            .build())
-                    .defaultSystem(Prompts.handoffSystemPrompt)
-                    .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
-                    .build();
-
             case CONTINUITY -> ChatClient
                     .builder(VertexAiGeminiChatModel
                             .builder()

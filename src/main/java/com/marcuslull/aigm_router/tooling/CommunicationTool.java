@@ -63,7 +63,6 @@ public class CommunicationTool {
                 parseUUIDArray(relatedDeferralIds),
                 Double.parseDouble(confidenceScore)
         );
-        System.out.println("Communication Tool Request: " + deferral);
 
         ChatClient targetAIChatClient = modelGroup.getModel(deferral.targetAI());
 
@@ -80,7 +79,7 @@ public class CommunicationTool {
 
         String response = responseFuture.get();
 
-        System.out.println("Communication Tool Response: " + response);
+        System.out.println("A successful deferral has been exchanged from: " + deferral.sourceAI() + " to: " + deferral.targetAI());
         return Map.of("Response", response);
     }
 
