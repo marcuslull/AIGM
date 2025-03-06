@@ -1,6 +1,6 @@
 package com.marcuslull.aigm_router.model;
 
-public enum DeferralType {
+public enum DeferralTypes {
     INFORMATION_REQUEST,
     ACTION_VALIDATION,
     EVENT_TRIGGER,

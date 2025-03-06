@@ -1,26 +1,26 @@
 package com.marcuslull.aigm_router.service;
 
 import com.google.cloud.vertexai.VertexAI;
-import com.marcuslull.aigm_router.config.Prompts;
-import com.marcuslull.aigm_router.model.AIModelType;
+import com.marcuslull.aigm_router.model.AIClientTypes;
+import com.marcuslull.aigm_router.prompts.SystemPrompts;
 import com.marcuslull.aigm_router.tooling.CommunicationTool;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
-@Component
-public class AiModelFactory {
+@Service
+public class AIClientFactory {
 
     private final CommunicationTool communicationTool;
 
-    public AiModelFactory(CommunicationTool communicationTool) {
+    public AIClientFactory(CommunicationTool communicationTool) {
         this.communicationTool = communicationTool;
     }
 
-    public ChatClient createAiModel(AIModelType type) {
+    public ChatClient createAiModel(AIClientTypes type) {
 
         return switch (type) {
             case ORATORIX -> ChatClient
@@ -28,7 +28,7 @@ public class AiModelFactory {
                             .builder()
                             .vertexAI(new VertexAI())
                             .build())
-                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.oratorixSystemPrompt)
+                    .defaultSystem(SystemPrompts.generalSystemPrompt + SystemPrompts.oratorixSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .defaultTools(communicationTool)
                     .build();
@@ -38,7 +38,7 @@ public class AiModelFactory {
                             .builder()
                             .vertexAI(new VertexAI())
                             .build())
-                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.orbisSystemPrompt)
+                    .defaultSystem(SystemPrompts.generalSystemPrompt + SystemPrompts.orbisSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .defaultTools(communicationTool)
                     .build();
@@ -48,7 +48,7 @@ public class AiModelFactory {
                             .builder()
                             .vertexAI(new VertexAI())
                             .build())
-                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.chronosSystemPrompt)
+                    .defaultSystem(SystemPrompts.generalSystemPrompt + SystemPrompts.chronosSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .defaultTools(communicationTool)
                     .build();
@@ -58,7 +58,7 @@ public class AiModelFactory {
                             .builder()
                             .vertexAI(new VertexAI())
                             .build())
-                    .defaultSystem(Prompts.generalSystemPrompt + Prompts.justivorSystemPrompt)
+                    .defaultSystem(SystemPrompts.generalSystemPrompt + SystemPrompts.justivorSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .defaultTools(communicationTool)
                     .build();
@@ -68,7 +68,7 @@ public class AiModelFactory {
                             .builder()
                             .vertexAI(new VertexAI())
                             .build())
-                    .defaultSystem(Prompts.continuitySystemPrompt)
+                    .defaultSystem(SystemPrompts.continuitySystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .build();
 

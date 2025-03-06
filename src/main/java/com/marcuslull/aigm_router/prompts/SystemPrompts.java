@@ -1,6 +1,6 @@
-package com.marcuslull.aigm_router.config;
+package com.marcuslull.aigm_router.prompts;
 
-public class Prompts {
+public class SystemPrompts {
 
     public static String generalSystemPrompt =
             """

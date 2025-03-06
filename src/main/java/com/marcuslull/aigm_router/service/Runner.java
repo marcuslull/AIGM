@@ -1,53 +1,35 @@
 package com.marcuslull.aigm_router.service;
 
-import com.marcuslull.aigm_router.tooling.CommunicationTool;
+import com.marcuslull.aigm_router.model.AIClientGroup;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.prompt.ChatOptions;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.model.tool.ToolCallingChatOptions;
-import org.springframework.ai.model.tool.ToolExecutionResult;
-import org.springframework.ai.vertexai.gemini.schema.VertexToolCallingManager;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Scanner;
 
-import static com.marcuslull.aigm_router.model.AIModelType.*;
+import static com.marcuslull.aigm_router.model.AIClientTypes.CONTINUITY;
+import static com.marcuslull.aigm_router.model.AIClientTypes.ORATORIX;
 
-@Component
+@Service
 public class Runner implements CommandLineRunner {
 
-    private final VertexToolCallingManager toolCallingManager;
     private final Scanner scanner = new Scanner(System.in);
-    private final AiModelFactory aiModelFactory;
-    private final ModelGroup modelGroup;
+    private final AIClientGroup AIClientGroup;
 
-    public Runner(VertexToolCallingManager toolCallingManager, AiModelFactory aiModelFactory, ModelGroup modelGroup) {
-        this.toolCallingManager = toolCallingManager;
-        this.aiModelFactory = aiModelFactory;
-        this.modelGroup = modelGroup;
+    public Runner(AIClientGroup AIClientGroup) {
+        this.AIClientGroup = AIClientGroup;
     }
 
     @Override
     public void run(String... args) {
 
-
-
-        modelGroup.addModel(ORATORIX, aiModelFactory.createAiModel(ORATORIX));
-        modelGroup.addModel(ORBIS, aiModelFactory.createAiModel(ORBIS));
-        modelGroup.addModel(CHRONOS, aiModelFactory.createAiModel(CHRONOS));
-        modelGroup.addModel(JUSTIVOR, aiModelFactory.createAiModel(JUSTIVOR));
-        modelGroup.addModel(CONTINUITY, aiModelFactory.createAiModel(CONTINUITY));
-
-        ChatClient client = modelGroup.getModel(ORATORIX);
-        ChatClient continuity = modelGroup.getModel(CONTINUITY);
+        ChatClient client = AIClientGroup.getModel(ORATORIX);
+        ChatClient continuity = AIClientGroup.getModel(CONTINUITY);
         String response;
 
-        System.out.println("***Ready!***");
+        System.out.println("\n***AIGM is Ready!***");
 
         while (true) {
-            System.out.println("\nNew loop ---------------------------------------");
             String line = scanner.nextLine();
 
             // START DEV MODE
@@ -55,38 +37,24 @@ public class Runner implements CommandLineRunner {
                 ChatClient previousChatClient = client;
                 client = continuity;
                 while (true) {
-
                     String devLine = scanner.nextLine();
-
                     if (devLine.equals("break")) break;
-
-                    System.out.println("\nNew DEV loop ---------------------------------------");
                     response = send(client, devLine);
-                    System.out.println("response = " + response);
+                    System.out.println(response);
                 }
-
                 client = previousChatClient; // reset back to pre-dev mode client
                 continue;
             }
+            // END DEV MODE
 
             response = send(client, line);
-            System.out.println("response = " + response);
+            System.out.println(response);
 
-            send(continuity, "[GM: " + response + "Player: " + line + "] - REMEMBER, DO NOT RESPOND TO THIS MESSAGE"); // DEV model
+            send(continuity, "[GM: " + response + "Player: " + line + "] - DO NOT RESPOND TO THIS MESSAGE"); // DEV model
         }
     }
 
     private String send(ChatClient client, String userPrompt) {
-
-        ChatOptions chatOptions = ToolCallingChatOptions.builder().internalToolExecutionEnabled(false).build();
-        Prompt prompt = new Prompt(userPrompt, chatOptions);
-        ChatResponse chatResponse = client.prompt(prompt).call().chatResponse();
-
-        if (chatResponse.hasToolCalls()) {
-            ToolExecutionResult toolExecutionResult = toolCallingManager.executeToolCalls(prompt, chatResponse);
-            chatResponse = client.prompt().user(toolExecutionResult.conversationHistory().toString()).call().chatResponse();
-        }
-
-        return chatResponse.getResult().getOutput().getText();
+        return client.prompt().user(userPrompt).call().content();
     }
 }
