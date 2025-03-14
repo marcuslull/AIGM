@@ -1,6 +1,6 @@
 package com.marcuslull.aigm_router.model;
 
-public enum AIClientTypes {
+public enum AIName {
     ORATORIX("oratorix"),
     CHRONOS("chronos"),
     ORBIS("orbis"),
@@ -9,7 +9,7 @@ public enum AIClientTypes {
 
     private final String stringName;
 
-    AIClientTypes(String stringName) {
+    AIName(String stringName) {
         this.stringName = stringName;
     }
 
@@ -17,8 +17,8 @@ public enum AIClientTypes {
         return stringName;
     }
 
-    public static AIClientTypes fromString(String text) {
-        for (AIClientTypes model : AIClientTypes.values()) {
+    public static AIName fromString(String text) {
+        for (AIName model : AIName.values()) {
             if (model.getStringName().equalsIgnoreCase(text)) {
                 return model;
             }

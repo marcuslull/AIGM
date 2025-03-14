@@ -3,7 +3,7 @@ package com.marcuslull.aigm_router.service;
 import com.marcuslull.aigm_router.model.AIClientGroup;
 import org.springframework.stereotype.Service;
 
-import static com.marcuslull.aigm_router.model.AIClientTypes.*;
+import static com.marcuslull.aigm_router.model.AIName.*;
 
 @Service
 public class ClientGroupCreator {

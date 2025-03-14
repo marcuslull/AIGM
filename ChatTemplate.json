@@ -1,0 +1,12 @@
+{
+  "playerMessage": "message to the players",
+  "groupMessage": {
+    "target": "ORATORIX, JUSTIVOR, CHRONOS, or ORBIS",
+    "priority": "HIGH, MEDIUM, LOW",
+    "message": "message to the group member",
+    "context": "context of the message to the group member",
+    "uuid": "UUID for this message",
+    "relatedUuids": ["UUID", "another UUID", "more UUIDs"],
+    "confidence": 0.5
+  }
+}

@@ -8,17 +8,17 @@ import java.util.Map;
 
 public class AIClientGroup {
 
-    private final Map<AIClientTypes, ChatClient> aiModelMap = new HashMap<>();
+    private final Map<AIName, ChatClient> aiModelMap = new HashMap<>();
 
-    public ChatClient getModel(AIClientTypes aiClientTypes) {
-        return aiModelMap.get(aiClientTypes);
+    public ChatClient getModel(AIName aiName) {
+        return aiModelMap.get(aiName);
     }
 
-    public void addModel(AIClientTypes name, ChatClient chatClient) {
+    public void addModel(AIName name, ChatClient chatClient) {
         aiModelMap.put(name, chatClient);
     }
 
-    public void removeModel(AIClientTypes name) {
+    public void removeModel(AIName name) {
         aiModelMap.remove(name);
     }
 
@@ -26,8 +26,12 @@ public class AIClientGroup {
         aiModelMap.clear();
     }
 
-    public Map<AIClientTypes, ChatClient> getAiModelMap() {
+    public Map<AIName, ChatClient> getAiModelMap() {
         return aiModelMap;
+    }
+
+    public void printModelMap() {
+        this.aiModelMap.forEach((k,v) -> System.out.println(k + ": " + v.hashCode()));
     }
 
     @Override

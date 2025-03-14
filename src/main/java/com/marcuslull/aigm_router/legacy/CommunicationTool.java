@@ -1,9 +1,12 @@
-package com.marcuslull.aigm_router.tooling;
+package com.marcuslull.aigm_router.legacy;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marcuslull.aigm_router.model.*;
+import com.marcuslull.aigm_router.model.AIClientGroup;
+import com.marcuslull.aigm_router.model.AIMessagePriority;
+import com.marcuslull.aigm_router.model.AIName;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Service;
@@ -46,20 +49,25 @@ public class CommunicationTool {
         Deferral deferral = new Deferral(
                 UUID.fromString(deferralId),
                 DeferralTypes.valueOf(deferralType),
-                AIClientTypes.fromString(sourceAI),
-                AIClientTypes.fromString(targetAI),
-                DeferralPriorities.valueOf(priority),
+                AIName.fromString(sourceAI),
+                AIName.fromString(targetAI),
+                AIMessagePriority.valueOf(priority),
                 new DeferralData(data),
                 new DeferralContext(context),
                 mapper.writeValueAsString(relatedDeferralIds),
                 Double.parseDouble(confidenceScore)
         );
 
+        System.out.println("\nDEFERRAL: " + deferral);
+
         ChatClient targetAIChatClient = AIClientGroup.getModel(deferral.targetAI());
-        String response = targetAIChatClient.prompt().user(deferral.toString()).call().content();
-        System.out.println("A successful deferral has been exchanged from: " + deferral.sourceAI() + " to: " + deferral.targetAI());
+        ChatResponse response = targetAIChatClient.prompt().user(deferral.toString()).call().chatResponse();
+
+        System.out.println("\nA successful deferral has been exchanged from: " + deferral.sourceAI() + " to: " + deferral.targetAI());
+        System.out.println("\nDEFERRAL RESPONSE: " + response);
+
         assert response != null;
-        return Map.of("Response", response);
+        return Map.of("Response", response.toString());
     }
 
 }
