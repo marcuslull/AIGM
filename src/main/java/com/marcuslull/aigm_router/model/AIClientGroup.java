@@ -1,11 +1,13 @@
 package com.marcuslull.aigm_router.model;
 
+import com.marcuslull.aigm_router.model.enums.AIName;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Component
 public class AIClientGroup {
 
     private final Map<AIName, ChatClient> aiModelMap = new HashMap<>();
@@ -16,22 +18,6 @@ public class AIClientGroup {
 
     public void addModel(AIName name, ChatClient chatClient) {
         aiModelMap.put(name, chatClient);
-    }
-
-    public void removeModel(AIName name) {
-        aiModelMap.remove(name);
-    }
-
-    public void clearModelGroup() {
-        aiModelMap.clear();
-    }
-
-    public Map<AIName, ChatClient> getAiModelMap() {
-        return aiModelMap;
-    }
-
-    public void printModelMap() {
-        this.aiModelMap.forEach((k,v) -> System.out.println(k + ": " + v.hashCode()));
     }
 
     @Override

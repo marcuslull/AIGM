@@ -1,7 +1,7 @@
 package com.marcuslull.aigm_router.service;
 
 import com.google.cloud.vertexai.VertexAI;
-import com.marcuslull.aigm_router.model.AIName;
+import com.marcuslull.aigm_router.model.enums.AIName;
 import com.marcuslull.aigm_router.prompts.SystemPrompts;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -60,8 +60,6 @@ public class AIClientFactory {
                     .defaultSystem(SystemPrompts.continuitySystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .build();
-
-            default -> throw new RuntimeException(":(");
         };
     }
 }
