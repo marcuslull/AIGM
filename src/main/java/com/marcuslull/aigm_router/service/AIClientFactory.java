@@ -5,13 +5,21 @@ import com.marcuslull.aigm_router.model.enums.AIName;
 import com.marcuslull.aigm_router.prompts.SystemPrompts;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class AIClientFactory {
+
+    private final VectorStore vectorStore;
+
+    public AIClientFactory(VectorStore vectorStore) {
+        this.vectorStore = vectorStore;
+    }
 
     public ChatClient createAiModel(AIName type) {
 
@@ -22,7 +30,7 @@ public class AIClientFactory {
                             .vertexAI(new VertexAI())
                             .build())
                     .defaultSystem(SystemPrompts.devMode + SystemPrompts.generalSystemPrompt + SystemPrompts.oratorixSystemPrompt)
-                    .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+                    .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()), new QuestionAnswerAdvisor(vectorStore))
                     .build();
 
             case ORBIS -> ChatClient

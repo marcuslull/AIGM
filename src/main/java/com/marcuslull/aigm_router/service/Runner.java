@@ -18,25 +18,28 @@ public class Runner implements CommandLineRunner {
     private final AIClientGroup aiClientGroup;
     private final MessageService messageService;
     private final ConfigurableApplicationContext context;
+    private final VectorIngestion vectorIngestion;
 
     private ChatClient client;
 
-    public Runner(AIClientGroup aiClientGroup, MessageService messageService, ConfigurableApplicationContext context) {
+    public Runner(AIClientGroup aiClientGroup, MessageService messageService, ConfigurableApplicationContext context, VectorIngestion vectorIngestion) {
         this.aiClientGroup = aiClientGroup;
         this.messageService = messageService;
         this.context = context;
+        this.vectorIngestion = vectorIngestion;
     }
 
     @Override
     public void run(String... args) {
         try {
             if (initialize()) eventLoop();
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private boolean initialize() {
+//        vectorIngestion.ingestDocsFolder();
         this.client = aiClientGroup.getModel(AIName.ORATORIX);
         System.out.println("\nAI GM has been initialized");
         return true;
