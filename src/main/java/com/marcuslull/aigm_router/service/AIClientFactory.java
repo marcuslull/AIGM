@@ -21,7 +21,7 @@ public class AIClientFactory {
                             .builder()
                             .vertexAI(new VertexAI())
                             .build())
-                    .defaultSystem(SystemPrompts.generalSystemPrompt + SystemPrompts.oratorixSystemPrompt)
+                    .defaultSystem(SystemPrompts.devMode + SystemPrompts.generalSystemPrompt + SystemPrompts.oratorixSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .build();
 
@@ -30,7 +30,7 @@ public class AIClientFactory {
                             .builder()
                             .vertexAI(new VertexAI())
                             .build())
-                    .defaultSystem(SystemPrompts.generalSystemPrompt + SystemPrompts.orbisSystemPrompt)
+                    .defaultSystem(SystemPrompts.devMode + SystemPrompts.generalSystemPrompt + SystemPrompts.orbisSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .build();
 
@@ -39,7 +39,7 @@ public class AIClientFactory {
                             .builder()
                             .vertexAI(new VertexAI())
                             .build())
-                    .defaultSystem(SystemPrompts.generalSystemPrompt + SystemPrompts.chronosSystemPrompt)
+                    .defaultSystem(SystemPrompts.devMode + SystemPrompts.generalSystemPrompt + SystemPrompts.chronosSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .build();
 
@@ -48,7 +48,7 @@ public class AIClientFactory {
                             .builder()
                             .vertexAI(new VertexAI())
                             .build())
-                    .defaultSystem(SystemPrompts.generalSystemPrompt + SystemPrompts.justivorSystemPrompt)
+                    .defaultSystem(SystemPrompts.devMode + SystemPrompts.generalSystemPrompt + SystemPrompts.justivorSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .build();
 
