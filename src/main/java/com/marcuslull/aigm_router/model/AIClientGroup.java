@@ -20,6 +20,16 @@ public class AIClientGroup {
         aiModelMap.put(name, chatClient);
     }
 
+    public AIName getModelNameByHash(int hashcode) {
+        return this.aiModelMap
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().hashCode() == hashcode)
+                .findFirst()
+                .orElseThrow()
+                .getKey();
+    }
+
     @Override
     public String toString() {
         return "ModelGroup{" +

@@ -8,12 +8,12 @@ import static com.marcuslull.aigm_router.model.enums.AIName.*;
 @Service
 public class ClientGroupCreator {
 
-    public ClientGroupCreator(AIClientFactory AIClientFactory, AIClientGroup AIClientGroup) {
+    public ClientGroupCreator(AIClientFactory aiClientFactory, AIClientGroup aiClientGroup) {
 
-        AIClientGroup.addModel(ORATORIX, AIClientFactory.createAiModel(ORATORIX));
-        AIClientGroup.addModel(ORBIS, AIClientFactory.createAiModel(ORBIS));
-        AIClientGroup.addModel(CHRONOS, AIClientFactory.createAiModel(CHRONOS));
-        AIClientGroup.addModel(JUSTIVOR, AIClientFactory.createAiModel(JUSTIVOR));
-        AIClientGroup.addModel(CONTINUITY, AIClientFactory.createAiModel(CONTINUITY));
+            aiClientGroup.addModel(ORATORIX, aiClientFactory.createAiModel(ORATORIX));
+            aiClientGroup.addModel(ORBIS, aiClientFactory.createAiModel(ORBIS));
+            aiClientGroup.addModel(CHRONOS, aiClientFactory.createAiModel(CHRONOS));
+            aiClientGroup.addModel(JUSTIVOR, aiClientFactory.createAiModel(JUSTIVOR));
+            aiClientGroup.addModel(CONTINUITY, aiClientFactory.createAiModel(CONTINUITY));
     }
 }

@@ -16,9 +16,11 @@ import org.springframework.stereotype.Service;
 public class AIClientFactory {
 
     private final VectorStore vectorStore;
+    private final VertexAI vertexAI;
 
-    public AIClientFactory(VectorStore vectorStore) {
+    public AIClientFactory(VectorStore vectorStore, VertexAI vertexAI) {
         this.vectorStore = vectorStore;
+        this.vertexAI = vertexAI;
     }
 
     public ChatClient createAiModel(AIName type) {
@@ -27,7 +29,7 @@ public class AIClientFactory {
             case ORATORIX -> ChatClient
                     .builder(VertexAiGeminiChatModel
                             .builder()
-                            .vertexAI(new VertexAI())
+                            .vertexAI(this.vertexAI)
                             .build())
                     .defaultSystem(SystemPrompts.devMode + SystemPrompts.generalSystemPrompt + SystemPrompts.oratorixSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()), new QuestionAnswerAdvisor(vectorStore))
@@ -36,7 +38,7 @@ public class AIClientFactory {
             case ORBIS -> ChatClient
                     .builder(VertexAiGeminiChatModel
                             .builder()
-                            .vertexAI(new VertexAI())
+                            .vertexAI(this.vertexAI)
                             .build())
                     .defaultSystem(SystemPrompts.devMode + SystemPrompts.generalSystemPrompt + SystemPrompts.orbisSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
@@ -45,7 +47,7 @@ public class AIClientFactory {
             case CHRONOS -> ChatClient
                     .builder(VertexAiGeminiChatModel
                             .builder()
-                            .vertexAI(new VertexAI())
+                            .vertexAI(this.vertexAI)
                             .build())
                     .defaultSystem(SystemPrompts.devMode + SystemPrompts.generalSystemPrompt + SystemPrompts.chronosSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
@@ -54,7 +56,7 @@ public class AIClientFactory {
             case JUSTIVOR -> ChatClient
                     .builder(VertexAiGeminiChatModel
                             .builder()
-                            .vertexAI(new VertexAI())
+                            .vertexAI(this.vertexAI)
                             .build())
                     .defaultSystem(SystemPrompts.devMode + SystemPrompts.generalSystemPrompt + SystemPrompts.justivorSystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
@@ -63,7 +65,7 @@ public class AIClientFactory {
             case CONTINUITY -> ChatClient
                     .builder(VertexAiGeminiChatModel
                             .builder()
-                            .vertexAI(new VertexAI())
+                            .vertexAI(this.vertexAI)
                             .build())
                     .defaultSystem(SystemPrompts.continuitySystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))

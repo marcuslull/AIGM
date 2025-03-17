@@ -49,12 +49,14 @@ public class Runner implements CommandLineRunner {
         ChatMessage response = new ChatMessage("Welcome to the AI GM!\nType a message below to get started. Type 'quit' to exit.", null);
 
         while (true) {
-            if (response.hasGroupMessage()) {
-                if (response.hasPlayerMessage()) messageService.displayPlayerMessage(response);
-                response = messageService.processGroupMessage(response);
-                continue;
+            if (response != null) {
+                if (response.hasGroupMessage()) {
+                    if (response.hasPlayerMessage()) messageService.displayPlayerMessage(response);
+                    response = messageService.processGroupMessage(response);
+                    continue;
+                }
+                messageService.displayPlayerMessage(response);
             }
-            messageService.displayPlayerMessage(response);
             String userMessage = scanner.nextLine();
             if (userMessage.equalsIgnoreCase("quit")) break;
             response = messageService.send(client, userMessage);

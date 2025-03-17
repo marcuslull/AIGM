@@ -23,25 +23,32 @@ public class MessageService {
     }
 
     private ChatMessage send(ChatClient client, ChatMessage message) throws JsonProcessingException {
+        System.out.println("\n" + aiClientGroup.getModelNameByHash(client.hashCode()) + " - ");
         String content = client.prompt().user(message.toString()).call().content();
         return objectMapper.readValue(extractJson(content), ChatMessage.class);
     }
 
     ChatMessage send(ChatClient client, String message) throws JsonProcessingException {
+        System.out.println("\n" + aiClientGroup.getModelNameByHash(client.hashCode()) + " - ");
         String content = client.prompt().user(message).call().content();
         return objectMapper.readValue(extractJson(content), ChatMessage.class);
     }
 
     ChatMessage processGroupMessage(ChatMessage chatMessage) throws JsonProcessingException {
         AIName target = chatMessage.groupMessage().target();
-        ChatClient targetClient = aiClientGroup.getModel(target);
-
-        System.out.println("\nGROUP MESSAGE: " + chatMessage.groupMessage());
-        return send(targetClient, chatMessage);
+        // TODO: Implement validation for ChatMessage
+        ChatClient targetClient;
+        if (target != null) {
+            targetClient = aiClientGroup.getModel(target);
+            System.out.println("GROUP MESSAGE: " + chatMessage.groupMessage());
+            return send(targetClient, chatMessage);
+        }
+        System.out.println("Model is trying to send groupMessages with no target...");
+        return null;
     }
 
     void displayPlayerMessage(ChatMessage chatMessage) {
-        System.out.println("\n" + chatMessage.playerMessage());
+        System.out.println("PLAYER MESSAGE: " + chatMessage.playerMessage());
     }
 
     private String extractJson(String markdownString) {

@@ -1,6 +1,5 @@
 package com.marcuslull.aigm_router.service;
 
-import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.splitter.TextSplitter;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
