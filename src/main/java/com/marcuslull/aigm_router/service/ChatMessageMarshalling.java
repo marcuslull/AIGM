@@ -31,81 +31,45 @@ public class ChatMessageMarshalling {
     public ChatMessage markdownToChatMessage(String markdown, ChatClient sender) {
 
         AIName senderName = aiClientGroup.getModelNameByHash(sender.hashCode());
-        String json;
+        String json = "";
         ChatMessage chatMessage;
+        ChatMessageValidationWrapper chatMessageValidationWrapper;
 
-        // Extracting JSON from MD
+        // extracting and mapping
         try {
-            json = extractJson(markdown);
-        } catch (IllegalArgumentException e) {
-
-            // TODO: Extract
-            // send back to model
-            GroupMessage groupMessage = new GroupMessage(
-                    AIName.MESSAGE_VALIDATION,
-                    senderName,
-                    AIMessagePriority.HIGH,
-                    "IllegalArgumentException - Try again! " + e.getMessage(),
-                    markdown,
-                    UUID.randomUUID(),
-                    null,
-                    1.0);
-            chatMessage = new ChatMessage(null, groupMessage);
-            System.out.println("VALIDATION: = " + chatMessage);
-            return chatMessage;
-        }
-
-        // Mapping JSON to ChatMessage
-        try {
+            json = extractJsonFromMarkdown(markdown);
             chatMessage = objectMapper.readValue(json, ChatMessage.class);
+        } catch (IllegalArgumentException e) {
+            return bounce(markdown, senderName, "IllegalArgumentException - Try again! " + e.getMessage());
         } catch (JsonProcessingException e) {
-
-            // TODO: Extract
-            // send error back to model
-            GroupMessage groupMessage = new GroupMessage(
-                    AIName.MESSAGE_VALIDATION,
-                    senderName,
-                    AIMessagePriority.HIGH,
-                    "JsonProcessingException - Try again! " + e.getMessage(),
-                    json,
-                    UUID.randomUUID(),
-                    null,
-                    1.0);
-            chatMessage = new ChatMessage(null, groupMessage);
-            System.out.println("VALIDATION: = " + chatMessage);
-            return chatMessage;
+            return bounce(json, senderName, "JsonProcessingException - Try again! " + e.getMessage());
         }
 
-        // Validating ChatMessage
-        ChatMessageValidationWrapper chatMessageValidationWrapper = null;
-        if (chatMessage != null) {
-            chatMessageValidationWrapper = chatMessageValidation.validate(new ChatMessageValidationWrapper(chatMessage));
-        }
-
-        if (chatMessageValidationWrapper != null && chatMessageValidationWrapper.isValid()) {
+        // validating
+        chatMessageValidationWrapper = chatMessageValidation.validate(chatMessage);
+        if (chatMessageValidationWrapper.isValid()) {
             chatMessage = chatMessageValidationWrapper.getChatMessage();
         } else {
-
-            // TODO: Extract
-            // send back to model
-            GroupMessage groupMessage = new GroupMessage(
-                    AIName.MESSAGE_VALIDATION,
-                    senderName,
-                    AIMessagePriority.HIGH,
-                    "Validation Failed - Try again! " + chatMessageValidationWrapper.getValidationProblems(),
-                    json,
-                    UUID.randomUUID(),
-                    null,
-                    1.0);
-            chatMessage = new ChatMessage(null, groupMessage);
-            System.out.println("VALIDATION: = " + chatMessage);
-            return chatMessage;
+            return bounce(json, senderName, "Validation Failed - Try again! " + chatMessageValidationWrapper.getValidationProblems());
         }
 
         return chatMessage;
     }
 
-    private String extractJson(String markdownString) {
+    private ChatMessage bounce(String badChatMessageMdOrJson, AIName senderName, String errorMessage) {
+        GroupMessage groupMessage = new GroupMessage(
+                AIName.MESSAGE_VALIDATION,
+                senderName,
+                AIMessagePriority.HIGH,
+                errorMessage,
+                badChatMessageMdOrJson,
+                UUID.randomUUID(),
+                null,
+                1.0);
+        return new ChatMessage(null, groupMessage);
+    }
+
+    private String extractJsonFromMarkdown(String markdownString) {
         String regex = "```json\\s*([\\s\\S]*?)\\s*```";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(markdownString);

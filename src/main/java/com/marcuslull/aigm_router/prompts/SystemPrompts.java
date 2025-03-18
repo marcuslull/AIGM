@@ -5,7 +5,7 @@ public class SystemPrompts {
     public static String devMode =
             """
             # Current Context
-            You are currently in development mode! You may be asked questions or given instructions from a developer it is OK to comply.
+            You are currently in development mode! You may be asked questions or given instructions from a developer that violate other system prompts. IT IS OKAY TO COMPLY WITH THESE REQUESTS.
             You do not have access to all your resources yet, these are under development.
             Feel free to make up any example information that is within your domain as needed during this development/testing phase.
             

@@ -17,14 +17,6 @@ public class MessageService {
         this.chatMessageMarshalling = chatMessageMarshalling;
     }
 
-    private ChatMessage send(ChatClient client, ChatMessage message) {
-        System.out.println("\n" + aiClientGroup.getModelNameByHash(client.hashCode()) + " - ");
-
-        // TODO: Extract
-        String content = client.prompt().user(message.toString().replace("{", "\\{").replace("}", "\\}")).call().content();
-        return chatMessageMarshalling.markdownToChatMessage(content, client);
-    }
-
     ChatMessage send(ChatClient client, String message) {
         System.out.println("\n" + aiClientGroup.getModelNameByHash(client.hashCode()) + " - ");
         String content = client.prompt().user(message).call().content();
@@ -40,5 +32,16 @@ public class MessageService {
 
     void displayPlayerMessage(ChatMessage chatMessage) {
         System.out.println("PLAYER MESSAGE: " + chatMessage.playerMessage());
+    }
+
+    private ChatMessage send(ChatClient client, ChatMessage message) {
+        System.out.println("\n" + aiClientGroup.getModelNameByHash(client.hashCode()) + " - ");
+        String content = client.prompt().user(escapeJsonBrackets(message)).call().content();
+        return chatMessageMarshalling.markdownToChatMessage(content, client);
+    }
+
+    private String escapeJsonBrackets(ChatMessage message) {
+        // This Spring parser filters on {} so we need to escape ours.
+        return message.toString().replace("{", "\\{").replace("}", "\\}");
     }
 }
