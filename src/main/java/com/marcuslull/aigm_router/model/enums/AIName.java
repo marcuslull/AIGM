@@ -5,7 +5,8 @@ public enum AIName {
     CHRONOS("chronos"),
     ORBIS("orbis"),
     JUSTIVOR("justivor"),
-    CONTINUITY("continuity");
+    CONTINUITY("continuity"),
+    MESSAGE_VALIDATION("message_validation");
 
     private final String stringName;
 

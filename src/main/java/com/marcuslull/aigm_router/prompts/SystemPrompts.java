@@ -28,7 +28,7 @@ public class SystemPrompts {
             ### Communication Protocol:
             
             * All communication should be issued in the following JSON object:
-            * {"playerMessage":"","groupMessage":{"target":"ORATORIX, JUSTIVOR, CHRONOS, or ORBIS","priority":"HIGH, MEDIUM, LOW","message":"message to the group member","context":"context of the message to the group member","uuid":"UUID for this message","relatedUuids":["UUID","another UUID","more UUIDs"],"confidence":0.5}}
+            * {"playerMessage":null,"groupMessage":{"target":"ORATORIX, JUSTIVOR, CHRONOS, or ORBIS","priority":"HIGH, MEDIUM, LOW","message":"message to the group member","context":"context of the message to the group member","uuid":"UUID for this message","relatedUuids":["UUID","another UUID","more UUIDs"],"confidence":0.5}}
             * ORATORIX may use either the playerMessage or groupMessage fields.
             * CHRONOS, ORBIS, JUSTIVOR may only use the groupMessage field.
             * Any playerMessage from CHRONOS, ORBIS, JUSTIVOR will be stripped from the JSON object before they reach the player.

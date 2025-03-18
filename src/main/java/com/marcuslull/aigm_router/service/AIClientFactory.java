@@ -70,6 +70,8 @@ public class AIClientFactory {
                     .defaultSystem(SystemPrompts.continuitySystemPrompt)
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .build();
+
+            case MESSAGE_VALIDATION -> null;
         };
     }
 }
