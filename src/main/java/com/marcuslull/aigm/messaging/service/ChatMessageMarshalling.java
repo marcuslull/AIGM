@@ -20,17 +20,15 @@ public class ChatMessageMarshalling {
 
     private final ChatMessageValidation chatMessageValidation;
     private final ObjectMapper objectMapper;
-    private final AIClientGroup aiClientGroup;
 
-    public ChatMessageMarshalling(ChatMessageValidation chatMessageValidation, ObjectMapper objectMapper, AIClientGroup aiClientGroup) {
+    public ChatMessageMarshalling(ChatMessageValidation chatMessageValidation, ObjectMapper objectMapper) {
         this.chatMessageValidation = chatMessageValidation;
         this.objectMapper = objectMapper;
-        this.aiClientGroup = aiClientGroup;
     }
 
     public ChatMessage markdownToChatMessage(String markdown, ChatClient sender) {
 
-        AIName senderName = aiClientGroup.getModelNameByHash(sender.hashCode());
+        AIName senderName = AIClientGroup.getModelNameByHash(sender.hashCode());
         String json = "";
         ChatMessage chatMessage;
         ChatMessageValidationWrapper chatMessageValidationWrapper;

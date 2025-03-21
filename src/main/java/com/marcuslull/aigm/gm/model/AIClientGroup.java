@@ -2,26 +2,24 @@ package com.marcuslull.aigm.gm.model;
 
 import com.marcuslull.aigm.gm.model.enums.AIName;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
 public class AIClientGroup {
 
-    private final Map<AIName, ChatClient> aiModelMap = new HashMap<>();
+    private static final Map<AIName, ChatClient> aiModelMap = new HashMap<>();
 
-    public ChatClient getModel(AIName aiName) {
+    public static ChatClient getModel(AIName aiName) {
         return aiModelMap.get(aiName);
     }
 
-    public void addModel(AIName name, ChatClient chatClient) {
+    public static void addModel(AIName name, ChatClient chatClient) {
         aiModelMap.put(name, chatClient);
     }
 
-    public AIName getModelNameByHash(int hashcode) {
-        return this.aiModelMap
+    public static AIName getModelNameByHash(int hashcode) {
+        return aiModelMap
                 .entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().hashCode() == hashcode)
