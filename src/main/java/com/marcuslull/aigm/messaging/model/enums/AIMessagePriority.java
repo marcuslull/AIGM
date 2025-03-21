@@ -1,4 +1,4 @@
-package com.marcuslull.aigm_router.model.enums;
+package com.marcuslull.aigm.messaging.model.enums;
 
 public enum AIMessagePriority {
     LOW,

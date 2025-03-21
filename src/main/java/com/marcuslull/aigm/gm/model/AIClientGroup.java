@@ -1,6 +1,6 @@
-package com.marcuslull.aigm_router.model;
+package com.marcuslull.aigm.gm.model;
 
-import com.marcuslull.aigm_router.model.enums.AIName;
+import com.marcuslull.aigm.gm.model.enums.AIName;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Component;
 

@@ -1,9 +1,9 @@
-package com.marcuslull.aigm_router.model;
+package com.marcuslull.aigm.messaging.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marcuslull.aigm_router.model.enums.AIMessagePriority;
-import com.marcuslull.aigm_router.model.enums.AIName;
+import com.marcuslull.aigm.gm.model.enums.AIName;
+import com.marcuslull.aigm.messaging.model.enums.AIMessagePriority;
 
 import java.util.List;
 import java.util.UUID;

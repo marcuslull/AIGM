@@ -1,7 +1,7 @@
-package com.marcuslull.aigm_router.service;
+package com.marcuslull.aigm.messaging.service;
 
-import com.marcuslull.aigm_router.model.ChatMessage;
-import com.marcuslull.aigm_router.model.ChatMessageValidationWrapper;
+import com.marcuslull.aigm.messaging.model.ChatMessage;
+import com.marcuslull.aigm.messaging.model.ChatMessageValidationWrapper;
 import org.springframework.stereotype.Service;
 
 @Service

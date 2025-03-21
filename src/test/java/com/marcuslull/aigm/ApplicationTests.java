@@ -1,10 +1,10 @@
-package com.marcuslull.aigm_router;
+package com.marcuslull.aigm;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AigmRouterApplicationTests {
+class ApplicationTests {
 
     @Test
     void contextLoads() {

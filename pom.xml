@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.marcuslull</groupId>
-    <artifactId>aigm_router</artifactId>
+    <artifactId>aigm</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>aigm_router</name>
     <description>aigm_router</description>
@@ -61,6 +61,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-docker-compose</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-pdf-document-reader</artifactId>
         </dependency>
     </dependencies>
     <dependencyManagement>

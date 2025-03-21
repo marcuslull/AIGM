@@ -1,4 +1,4 @@
-package com.marcuslull.aigm_router.model;
+package com.marcuslull.aigm.messaging.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

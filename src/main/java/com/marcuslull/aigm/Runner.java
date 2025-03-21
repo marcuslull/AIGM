@@ -1,9 +1,11 @@
-package com.marcuslull.aigm_router.service;
+package com.marcuslull.aigm;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.marcuslull.aigm_router.model.AIClientGroup;
-import com.marcuslull.aigm_router.model.ChatMessage;
-import com.marcuslull.aigm_router.model.enums.AIName;
+import com.marcuslull.aigm.data.VectorIngestion;
+import com.marcuslull.aigm.gm.model.AIClientGroup;
+import com.marcuslull.aigm.gm.model.enums.AIName;
+import com.marcuslull.aigm.messaging.model.ChatMessage;
+import com.marcuslull.aigm.messaging.service.MessageService;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ConfigurableApplicationContext;

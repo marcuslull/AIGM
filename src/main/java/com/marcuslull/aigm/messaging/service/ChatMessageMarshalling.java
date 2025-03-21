@@ -1,13 +1,13 @@
-package com.marcuslull.aigm_router.service;
+package com.marcuslull.aigm.messaging.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marcuslull.aigm_router.model.AIClientGroup;
-import com.marcuslull.aigm_router.model.ChatMessage;
-import com.marcuslull.aigm_router.model.ChatMessageValidationWrapper;
-import com.marcuslull.aigm_router.model.GroupMessage;
-import com.marcuslull.aigm_router.model.enums.AIMessagePriority;
-import com.marcuslull.aigm_router.model.enums.AIName;
+import com.marcuslull.aigm.gm.model.AIClientGroup;
+import com.marcuslull.aigm.gm.model.enums.AIName;
+import com.marcuslull.aigm.messaging.model.ChatMessage;
+import com.marcuslull.aigm.messaging.model.ChatMessageValidationWrapper;
+import com.marcuslull.aigm.messaging.model.GroupMessage;
+import com.marcuslull.aigm.messaging.model.enums.AIMessagePriority;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 

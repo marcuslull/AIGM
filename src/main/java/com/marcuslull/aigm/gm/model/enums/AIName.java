@@ -1,4 +1,4 @@
-package com.marcuslull.aigm_router.model.enums;
+package com.marcuslull.aigm.gm.model.enums;
 
 public enum AIName {
     ORATORIX("oratorix"),

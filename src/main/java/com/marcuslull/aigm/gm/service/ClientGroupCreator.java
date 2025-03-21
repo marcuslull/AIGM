@@ -1,9 +1,10 @@
-package com.marcuslull.aigm_router.service;
+package com.marcuslull.aigm.gm.service;
 
-import com.marcuslull.aigm_router.model.AIClientGroup;
+import com.marcuslull.aigm.gm.model.AIClientGroup;
 import org.springframework.stereotype.Service;
 
-import static com.marcuslull.aigm_router.model.enums.AIName.*;
+import static com.marcuslull.aigm.gm.model.enums.AIName.*;
+
 
 @Service
 public class ClientGroupCreator {

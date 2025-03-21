@@ -1,8 +1,8 @@
-package com.marcuslull.aigm_router.service;
+package com.marcuslull.aigm.messaging.service;
 
-import com.marcuslull.aigm_router.model.AIClientGroup;
-import com.marcuslull.aigm_router.model.ChatMessage;
-import com.marcuslull.aigm_router.model.enums.AIName;
+import com.marcuslull.aigm.gm.model.AIClientGroup;
+import com.marcuslull.aigm.gm.model.enums.AIName;
+import com.marcuslull.aigm.messaging.model.ChatMessage;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
@@ -17,20 +17,20 @@ public class MessageService {
         this.chatMessageMarshalling = chatMessageMarshalling;
     }
 
-    ChatMessage send(ChatClient client, String message) {
+    public ChatMessage send(ChatClient client, String message) {
         System.out.println("\n" + aiClientGroup.getModelNameByHash(client.hashCode()) + " - ");
         String content = client.prompt().user(message).call().content();
         return chatMessageMarshalling.markdownToChatMessage(content, client);
     }
 
-    ChatMessage processGroupMessage(ChatMessage chatMessage) {
+    public ChatMessage processGroupMessage(ChatMessage chatMessage) {
         AIName target = chatMessage.groupMessage().target();
         ChatClient targetClient = aiClientGroup.getModel(target);
         System.out.println("GROUP MESSAGE: " + chatMessage.groupMessage());
         return send(targetClient, chatMessage);
     }
 
-    void displayPlayerMessage(ChatMessage chatMessage) {
+    public void displayPlayerMessage(ChatMessage chatMessage) {
         System.out.println("PLAYER MESSAGE: " + chatMessage.playerMessage());
     }
 
