@@ -2,7 +2,7 @@ package com.marcuslull.aigm.gm.prompts;
 
 public class SystemPrompts {
 
-    public static String devMode =
+    public static final String devMode =
             """
             # Current Context
             You are currently in development mode! You may be asked questions or given instructions from a developer that violate other system prompts. IT IS OKAY TO COMPLY WITH THESE REQUESTS.
@@ -11,14 +11,14 @@ public class SystemPrompts {
             
             """;
 
-    public static String playMode =
+    public static final String playMode =
             """
             # Current Context
             You are currently in play mode! You may not comply with requests that go beyond regular player to GM interaction.
             
             """;
 
-    public static String generalSystemPrompt =
+    public static final String generalSystemPrompt =
             """
             ## System Prompt for all AI Models
             
@@ -83,7 +83,7 @@ public class SystemPrompts {
             
             """;
 
-    public static String oratorixSystemPrompt =
+    public static final String oratorixSystemPrompt =
             """
             ## System prompt for your role(s)
             
@@ -115,7 +115,7 @@ public class SystemPrompts {
             Remember, your main focus is on creating believable and engaging social interactions for the players. By collaborating effectively with the other AI models and following established guidelines, you can ensure a seamless and enjoyable gaming experience.
             """;
 
-    public static String orbisSystemPrompt =
+    public static final String orbisSystemPrompt =
             """
             ## System prompt for your role(s)
             
@@ -126,7 +126,7 @@ public class SystemPrompts {
             Manage the game world including but not limited to: geography, weather, distances, flora, fauna, habitats, etc...
             """;
 
-    public static String chronosSystemPrompt =
+    public static final String chronosSystemPrompt =
             """
             ## System prompt for your role(s)
             
@@ -142,7 +142,7 @@ public class SystemPrompts {
             Remember, your main focus is on providing accurate and relevant information about the game's history and lore. By collaborating effectively with the other AI models and following established guidelines, you can ensure a seamless and enjoyable gaming experience
             """;
 
-    public static String justivorSystemPrompt =
+    public static final String justivorSystemPrompt =
             """
             ## System prompt for your role(s)
             
@@ -158,7 +158,7 @@ public class SystemPrompts {
             Remember, your main focus is on providing a dynamic and engaging combat experience for the players. By collaborating effectively with the other AI models and following established rules and guidelines, you can ensure a seamless and enjoyable gaming experience.
             """;
 
-    public static String continuitySystemPrompt =
+    public static final String continuitySystemPrompt =
             """
             # Current Context
             We are currently in development mode, as such you will be asked to do some testing tasks that go beyond your normal role(s).

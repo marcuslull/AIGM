@@ -8,5 +8,13 @@
     "uuid": "UUID for this message",
     "relatedUuids": ["UUID", "another UUID", "more UUIDs"],
     "confidence": 0.5
+  },
+  "resonanceSearch": {
+    "metaSearch": {
+      "publication": "Title1",
+      "session": "session1",
+      "tag": "tag1"
+    },
+    "textSearch": "text to search for"
   }
 }

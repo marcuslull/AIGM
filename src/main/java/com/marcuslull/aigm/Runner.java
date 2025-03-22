@@ -2,7 +2,7 @@ package com.marcuslull.aigm;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.marcuslull.aigm.data.DataIngestion;
-import com.marcuslull.aigm.data.service.VectorDataIngestion;
+import com.marcuslull.aigm.data.service.ResonanceRetrieval;
 import com.marcuslull.aigm.gm.GmGroupCreator;
 import com.marcuslull.aigm.gm.model.AIClientGroup;
 import com.marcuslull.aigm.gm.model.enums.AIName;
@@ -23,20 +23,26 @@ public class Runner implements CommandLineRunner {
     private final DataIngestion dataIngestion;
     private final GmGroupCreator creator;
     private final Scanner scanner;
+    private final ResonanceRetrieval resonanceRetrieval;
 
     private ChatClient client;
 
-    public Runner(AIChatMessaging AIChatMessaging, ConfigurableApplicationContext context, VectorDataIngestion data, GmGroupCreator creator) {
+    public Runner(AIChatMessaging AIChatMessaging, ConfigurableApplicationContext context, DataIngestion dataIngestion, GmGroupCreator creator, ResonanceRetrieval resonanceRetrieval) {
         this.AIChatMessaging = AIChatMessaging;
         this.context = context;
-        this.dataIngestion = data;
+        this.dataIngestion = dataIngestion;
         this.creator = creator;
+        this.resonanceRetrieval = resonanceRetrieval;
 
         scanner = new Scanner(System.in);
     }
 
     @Override
-    public void run(String... args) {
+    public void run(String... args) throws JsonProcessingException {
+//        List<Document> results = resonanceRetrieval.query("{\"metaSearch\":{\"source\":\"SRD_CC_v5.1.pdf\",\"session\":null,\"tag\":null},\"textSearch\":\"initiative\"}");
+//        List<Document> results = resonanceRetrieval.query("{\"metaSearch\":{\"source\":\"chase.pdf\",\"session\":null,\"tag\":null},\"textSearch\":\"initiative\"}");
+//        System.out.println(results.size());
+
         try {
             if (initialize()) eventLoop();
         } catch (Exception e) {
@@ -45,7 +51,7 @@ public class Runner implements CommandLineRunner {
     }
 
     private boolean initialize() {
-//        data.ingest();
+//        dataIngestion.ingest();
         creator.create();
         this.client = AIClientGroup.getModel(AIName.ORATORIX);
         System.out.println("\nAI GM has been initialized");

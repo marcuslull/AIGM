@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class VectorDataIngestion implements DataIngestion {
+public class VectorIngestion implements DataIngestion {
     private final VectorStore vectorStore;
 
-    @Value("classpath:/ingestion/SRD_CC_v5.1.pdf")
+    @Value("classpath:/ingestion/chase.pdf")
     Resource resource;
 
     @Autowired
-    public VectorDataIngestion(VectorStore vectorStore) {
+    public VectorIngestion(VectorStore vectorStore) {
         this.vectorStore = vectorStore;
     }
 
