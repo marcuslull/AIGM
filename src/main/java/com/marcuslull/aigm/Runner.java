@@ -40,8 +40,11 @@ public class Runner implements CommandLineRunner {
     @Override
     public void run(String... args) throws JsonProcessingException {
 //        List<Document> results = resonanceRetrieval.query("{\"metaSearch\":{\"source\":\"SRD_CC_v5.1.pdf\",\"session\":null,\"tag\":null},\"textSearch\":\"initiative\"}");
-//        List<Document> results = resonanceRetrieval.query("{\"metaSearch\":{\"source\":\"chase.pdf\",\"session\":null,\"tag\":null},\"textSearch\":\"initiative\"}");
+//        List<Document> results = resonanceRetrieval.query("{\"metaSearch\":{\"source\":null,\"session\":\"0\",\"tag\":null},\"textSearch\":\"initiative\"}");
 //        System.out.println(results.size());
+//        results.forEach(document -> System.out.println(document.getText()));
+
+//        dataIngestion.ingest();
 
         try {
             if (initialize()) eventLoop();
@@ -51,7 +54,7 @@ public class Runner implements CommandLineRunner {
     }
 
     private boolean initialize() {
-//        dataIngestion.ingest();
+
         creator.create();
         this.client = AIClientGroup.getModel(AIName.ORATORIX);
         System.out.println("\nAI GM has been initialized");

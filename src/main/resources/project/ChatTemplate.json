@@ -11,9 +11,9 @@
   },
   "resonanceSearch": {
     "metaSearch": {
-      "publication": "Title1",
-      "session": "session1",
-      "tag": "tag1"
+      "source": "title",
+      "session": "session",
+      "tag": "tag"
     },
     "textSearch": "text to search for"
   }
