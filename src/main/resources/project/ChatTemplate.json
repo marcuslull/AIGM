@@ -1,5 +1,8 @@
 {
-  "playerMessage": "message to the players",
+  "author": "ORATORIX, JUSTIVOR, CHRONOS, or ORBIS",
+  "playerMessage": {
+    "message": "message to the players"
+  },
   "groupMessage": {
     "target": "ORATORIX, JUSTIVOR, CHRONOS, or ORBIS",
     "priority": "HIGH, MEDIUM, LOW",
@@ -15,6 +18,14 @@
       "session": "session",
       "tag": "tag"
     },
-    "textSearch": "text to search for"
-  }
+    "textSearch": "text to search for",
+    "response": null
+  },
+  "ledgerSearch": {
+    "table": "table",
+    "where": "column",
+    "equalTo": "value",
+    "response": null
+  },
+  "timeStamp": "current instant"
 }

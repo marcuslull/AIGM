@@ -1,19 +1,54 @@
 package com.marcuslull.aigm.messaging.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcuslull.aigm.gm.model.AIClientGroup;
 import com.marcuslull.aigm.gm.model.enums.AIName;
 import com.marcuslull.aigm.messaging.Messaging;
 import com.marcuslull.aigm.messaging.model.ChatMessage;
+import com.marcuslull.aigm.router.ResponseRouter;
+import com.marcuslull.aigm.router.model.AiResponse;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AIChatMessaging implements Messaging {
 
     private final ChatMessageMarshalling chatMessageMarshalling;
+    private final ObjectMapper mapper;
 
-    public AIChatMessaging(ChatMessageMarshalling chatMessageMarshalling) {
+    @Autowired
+    public AIChatMessaging(ChatMessageMarshalling chatMessageMarshalling, ObjectMapper mapper) {
         this.chatMessageMarshalling = chatMessageMarshalling;
+        this.mapper = mapper;
+    }
+
+    private ResponseRouter responseRouter;
+
+    @Autowired // Lazy setter DI to avoid circular DI on startup
+    public void setResponseRouter(@Lazy ResponseRouter responseRouter) {
+        this.responseRouter = responseRouter;
+    }
+
+    @Override
+    public void handle(ChatMessage chatMessage) throws JsonProcessingException {
+
+        AiResponse response;
+
+        if (chatMessage.hasPlayerMessage() && !chatMessage.hasGroupMessage()) {
+            displayPlayerMessage(chatMessage);
+            return;
+        }
+
+        if (chatMessage.hasGroupMessage()) {
+            displayPlayerMessage(chatMessage);
+            chatMessage = processGroupMessage(chatMessage);
+//            response = new AiResponse(chatMessage, null, null);
+//            String responseAsString = mapper.writeValueAsString(response);
+//            responseRouter.route(responseAsString);
+        }
     }
 
     @Override

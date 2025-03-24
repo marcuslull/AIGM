@@ -5,7 +5,6 @@ import com.marcuslull.aigm.gm.model.enums.AIName;
 import com.marcuslull.aigm.gm.prompts.SystemPrompts;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel;
@@ -30,7 +29,7 @@ public class AIClientFactory {
                             .vertexAI(this.vertexAI)
                             .build())
                     .defaultSystem(SystemPrompts.devMode + SystemPrompts.generalSystemPrompt + SystemPrompts.oratorixSystemPrompt)
-                    .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()), new QuestionAnswerAdvisor(vectorStore))
+                    .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .build();
 
             case ORBIS -> ChatClient
@@ -69,7 +68,7 @@ public class AIClientFactory {
                     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                     .build();
 
-            case MESSAGE_VALIDATION -> null;
+            case PLAYER -> null;
         };
     }
 }

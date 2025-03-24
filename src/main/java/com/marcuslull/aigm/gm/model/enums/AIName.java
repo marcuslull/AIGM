@@ -6,7 +6,7 @@ public enum AIName {
     ORBIS("orbis"),
     JUSTIVOR("justivor"),
     CONTINUITY("continuity"),
-    MESSAGE_VALIDATION("message_validation");
+    PLAYER("player");
 
     private final String stringName;
 

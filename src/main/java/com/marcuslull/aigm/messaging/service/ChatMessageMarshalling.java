@@ -56,7 +56,7 @@ public class ChatMessageMarshalling {
 
     private ChatMessage bounce(String badChatMessageMdOrJson, AIName senderName, String errorMessage) {
         GroupMessage groupMessage = new GroupMessage(
-                AIName.MESSAGE_VALIDATION,
+                AIName.PLAYER,
                 senderName,
                 AIMessagePriority.HIGH,
                 errorMessage,
