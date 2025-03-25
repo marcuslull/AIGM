@@ -1,52 +1,41 @@
 package com.marcuslull.aigm;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcuslull.aigm.data.DataIngestion;
 import com.marcuslull.aigm.data.ledger.LedgerDataHandler;
 import com.marcuslull.aigm.data.resonance.ResonanceDataHandler;
 import com.marcuslull.aigm.gm.GmGroupCreator;
-import com.marcuslull.aigm.gm.model.AIClientGroup;
-import com.marcuslull.aigm.gm.model.enums.AIName;
 import com.marcuslull.aigm.messaging.group.GroupMessageHandler;
 import com.marcuslull.aigm.messaging.player.PlayerMessageHandler;
-import com.marcuslull.aigm.messaging.service.AIChatMessaging;
-import com.marcuslull.aigm.router.ResponseRouter;
-import org.springframework.ai.chat.client.ChatClient;
+import com.marcuslull.aigm.router.CommunicationRouter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
 
-import java.util.Scanner;
 
 @Service
 public class Runner implements CommandLineRunner {
 
-    private final AIChatMessaging aiChatMessaging;
     private final ConfigurableApplicationContext context;
-    private final DataIngestion dataIngestion;
     private final GmGroupCreator creator;
-    private final Scanner scanner;
-    private final ResponseRouter responseRouter;
-    private final ObjectMapper mapper;
-    private final PlayerMessageHandler playerMessageHandler;
+    private final CommunicationRouter communicationRouter;
+    private final DataIngestion dataIngestion;
 
-    private ChatClient client;
-
-    public Runner(AIChatMessaging aiChatMessaging, ConfigurableApplicationContext context, DataIngestion dataIngestion, GmGroupCreator creator, ResponseRouter responseRouter, ObjectMapper mapper, PlayerMessageHandler playerMessageHandler) {
-        this.aiChatMessaging = aiChatMessaging;
+    @Autowired
+    public Runner(ConfigurableApplicationContext context,
+                  DataIngestion dataIngestion,
+                  GmGroupCreator creator,
+                  CommunicationRouter communicationRouter) {
         this.context = context;
         this.dataIngestion = dataIngestion;
         this.creator = creator;
-        this.responseRouter = responseRouter;
-        this.mapper = mapper;
-        this.playerMessageHandler = playerMessageHandler;
-
-        scanner = new Scanner(System.in);
+        this.communicationRouter = communicationRouter;
     }
 
     @Override
     public void run(String... args) {
 
+        // Vector DB data ingestion
 //        dataIngestion.ingest();
 
         try {
@@ -57,51 +46,24 @@ public class Runner implements CommandLineRunner {
     }
 
     private boolean initialize() {
-        creator.create();
-        this.client = AIClientGroup.getModel(AIName.ORATORIX);
-        System.out.println("\nGMs have been initialized");
 
-        responseRouter.addHandler(context.getBean(PlayerMessageHandler.class));
-        responseRouter.addHandler(context.getBean(GroupMessageHandler.class));
-        responseRouter.addHandler(context.getBean(ResonanceDataHandler.class));
-        responseRouter.addHandler(context.getBean(LedgerDataHandler.class));
-        System.out.println("\nResponse handlers registered");
+        // Create our AI clients and add them to our AI Group
+        creator.create();
+        System.out.println("\nGMs have been initialized...");
+
+        // Register the handlers for the different types of communication the AI group utilizes
+        communicationRouter.addHandler(context.getBean(PlayerMessageHandler.class));
+        communicationRouter.addHandler(context.getBean(GroupMessageHandler.class));
+        communicationRouter.addHandler(context.getBean(ResonanceDataHandler.class));
+        communicationRouter.addHandler(context.getBean(LedgerDataHandler.class));
+        System.out.println("Response handlers registered...");
 
         System.out.println("\nWelcome to AI Game Master!");
         return true;
     }
 
     private void eventLoop() {
-
-        playerMessageHandler.handle(null);
-
-//        ChatMessage response = new ChatMessage("Welcome to the AI GM!\nType a message below to get started. Type 'quit' to exit.", null);
-//        ChatMessage response;
-//
-//        while (true) {
-
-
-
-
-
-//            if (response != null) {
-//                if (response.hasGroupMessage()) {
-//                    if (response.hasPlayerMessage()) aiChatMessaging.displayPlayerMessage(response);
-//                    response = aiChatMessaging.processGroupMessage(response);
-//                    continue;
-//                }
-//                aiChatMessaging.displayPlayerMessage(response);
-//            }
-
-
-
-//            String userMessage = scanner.nextLine();
-//            if (userMessage.equalsIgnoreCase("quit")) break;
-//            response = aiChatMessaging.send(client, userMessage);
-//        }
-//
-//        System.out.println("Shutting down AI GM...");
-//        scanner.close();
-//        context.close();
+        // kick off the app with an empty communication
+        communicationRouter.route(null);
     }
 }

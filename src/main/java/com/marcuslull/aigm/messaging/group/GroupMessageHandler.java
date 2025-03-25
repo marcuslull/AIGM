@@ -2,12 +2,12 @@ package com.marcuslull.aigm.messaging.group;
 
 import com.marcuslull.aigm.gm.model.enums.AIName;
 import com.marcuslull.aigm.messaging.group.service.GroupMessageService;
-import com.marcuslull.aigm.router.AiResponseHandler;
-import com.marcuslull.aigm.router.model.AiResponse;
+import com.marcuslull.aigm.router.CommunicationHandler;
+import com.marcuslull.aigm.router.model.CommunicationPacket;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GroupMessageHandler implements AiResponseHandler {
+public class GroupMessageHandler implements CommunicationHandler {
 
     private final GroupMessageService groupMessageService;
 
@@ -16,14 +16,14 @@ public class GroupMessageHandler implements AiResponseHandler {
     }
 
     @Override
-    public void handle(AiResponse aiResponse) {
+    public void handle(CommunicationPacket communicationPacket) {
         System.out.println("NEW AI GROUP CONVERSATION");
-        AIName aiName = AIName.valueOf(aiResponse.author());
-        groupMessageService.startConversation(aiName, aiResponse.groupMessage());
+        AIName aiName = AIName.valueOf(communicationPacket.author());
+        groupMessageService.startConversation(aiName, communicationPacket.groupMessage());
     }
 
     @Override
-    public boolean canHandle(AiResponse aiResponse) {
-        return aiResponse.hasGroupMessage();
+    public boolean canHandle(CommunicationPacket communicationPacket) {
+        return communicationPacket.hasGroupMessage();
     }
 }

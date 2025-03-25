@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcuslull.aigm.gm.model.AIClientGroup;
 import com.marcuslull.aigm.gm.model.enums.AIName;
 import com.marcuslull.aigm.messaging.player.model.PlayerMessage;
-import com.marcuslull.aigm.router.ResponseRouter;
-import com.marcuslull.aigm.router.model.AiResponse;
+import com.marcuslull.aigm.router.CommunicationRouter;
+import com.marcuslull.aigm.router.model.CommunicationPacket;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -24,11 +24,11 @@ public class PlayerMessageService {
     private final ObjectMapper objectMapper;
     private final Scanner scanner = new Scanner(System.in);
 
-    private ResponseRouter responseRouter;
+    private CommunicationRouter communicationRouter;
 
     @Autowired // Lazy setter DI to avoid circular DI on startup
-    public void setResponseRouter(@Lazy ResponseRouter responseRouter) {
-        this.responseRouter = responseRouter;
+    public void setResponseRouter(@Lazy CommunicationRouter communicationRouter) {
+        this.communicationRouter = communicationRouter;
     }
 
     @Autowired
@@ -37,44 +37,66 @@ public class PlayerMessageService {
         this.objectMapper = objectMapper;
     }
 
-    public void startConversation(AiResponse aiResponse) {
-        conversationLoop(aiResponse);
+    public void startConversation(CommunicationPacket communicationPacket) {
+        // start the player to AI communication loop
+        conversationLoop(communicationPacket);
+
+        // Since the whole app is predicated on player communication the player conversation loop state
+        // will determine the whole apps state.
+
+        // exited the main communication loop via player typing 'quit'. Close up the app
         System.out.println("Shutting down AI GM...");
         scanner.close();
         context.close();
     }
 
-    private void conversationLoop(AiResponse aiResponse) {
+    private void conversationLoop(CommunicationPacket communicationPacket) {
 
         String messageFromPlayer;
 
-        boolean appIsAlive = true;
-        while (appIsAlive) {
+        while (true) {
 
-            if (aiResponse != null) System.out.println(aiResponse.author() + ": " + aiResponse.playerMessage().message());
+            // display the output of the previous response unless null (probably the start of the app)
+            if (communicationPacket != null) {
+                System.out.println(communicationPacket.author() + ": " + communicationPacket.playerMessage().message());
+            }
 
+            // get user prompt or quit
             messageFromPlayer = scanner.nextLine();
-            if (messageFromPlayer.equalsIgnoreCase("quit")) appIsAlive = false;
+            if (messageFromPlayer.equalsIgnoreCase("quit")) break;
 
-            aiResponse = new AiResponse(null, new PlayerMessage(messageFromPlayer), null, null, null);
-            aiResponse = send(aiResponse);
+            // compose prompt into a communication and send to AI
+            communicationPacket = new CommunicationPacket(
+                    null,
+                    new PlayerMessage(messageFromPlayer),
+                    null,
+                    null,
+                    null);
+            communicationPacket = send(communicationPacket);
 
-            // if the response is only a player message we can keep handling it with this loop.
-            if (aiResponse.hasPlayerMessageOnly()) continue;
+            // if the response has a player message element we can keep handling it with this loop.
+            if (communicationPacket.hasPlayerMessageOnly()) continue;
 
-            // otherwise send the rest to be routed
-            responseRouter.route(new AiResponse(aiResponse.author(), null, aiResponse.groupMessage(), aiResponse.resonanceSearch(), aiResponse.ledgerSearch()));
+            // and send the rest to be routed as needed
+            communicationRouter.route(new CommunicationPacket(
+                    communicationPacket.author(),
+                    null,
+                    communicationPacket.groupMessage(),
+                    communicationPacket.resonanceSearch(),
+                    communicationPacket.ledgerSearch()));
         }
     }
 
-    private AiResponse send(AiResponse response) {
-        ChatClient client = AIClientGroup.getModel(AIName.ORATORIX);
+    private CommunicationPacket send(CommunicationPacket response) {
+        ChatClient client = AIClientGroup.getModel(AIName.ORATORIX); // player facing AI is always ORATORIX
 
+        // Spring AI ChatClient expects text and filters on `{` or `}` for their own parsing.
+        // The AIs respond in markdown JSON
         try {
-            String jsonString = objectMapper.writeValueAsString(response);
-            String markdown = client.prompt().user(escapeJsonBrackets(jsonString)).call().content();
-            String json = extractJsonFromMarkdown(markdown);
-            response = objectMapper.readValue(json, AiResponse.class);
+            String jsonString = objectMapper.writeValueAsString(response); // convert to JSON
+            String markdown = client.prompt().user(escapeJsonBrackets(jsonString)).call().content(); // escape {} and send
+            String json = extractJsonFromMarkdown(markdown); // remove the Markdown code ticks (```json ... ```)
+            response = objectMapper.readValue(json, CommunicationPacket.class); // convert to Object
         } catch (JsonProcessingException e) {
             //TODO: Handle this
             throw new RuntimeException(e);
@@ -83,11 +105,12 @@ public class PlayerMessageService {
     }
 
     private String escapeJsonBrackets(String message) {
-        // This Spring parser filters on {} so we need to escape ours.
-        return message.toString().replace("{", "\\{").replace("}", "\\}");
+        // The Spring AI ChatClient parser filters on `{` and `}` so we need to escape ours.
+        return message.replace("{", "\\{").replace("}", "\\}");
     }
 
     private String extractJsonFromMarkdown(String markdownString) {
+        // The AIs respond in Markdown codeblock formatted JSON. We need to strip the Markdown
         String regex = "```json\\s*([\\s\\S]*?)\\s*```";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(markdownString);

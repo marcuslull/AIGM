@@ -1,12 +1,12 @@
 package com.marcuslull.aigm.messaging.player;
 
 import com.marcuslull.aigm.messaging.player.service.PlayerMessageService;
-import com.marcuslull.aigm.router.AiResponseHandler;
-import com.marcuslull.aigm.router.model.AiResponse;
+import com.marcuslull.aigm.router.CommunicationHandler;
+import com.marcuslull.aigm.router.model.CommunicationPacket;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PlayerMessageHandler implements AiResponseHandler {
+public class PlayerMessageHandler implements CommunicationHandler {
 
     private final PlayerMessageService playerMessageService;
 
@@ -15,13 +15,13 @@ public class PlayerMessageHandler implements AiResponseHandler {
     }
 
     @Override
-    public void handle(AiResponse aiResponse) {
+    public void handle(CommunicationPacket communicationPacket) {
         System.out.println("NEW PLAYER CONVERSATION");
-        playerMessageService.startConversation(aiResponse);
+        playerMessageService.startConversation(communicationPacket);
     }
 
     @Override
-    public boolean canHandle(AiResponse aiResponse) {
-        return aiResponse.hasPlayerMessage();
+    public boolean canHandle(CommunicationPacket communicationPacket) {
+        return communicationPacket.hasPlayerMessage();
     }
 }

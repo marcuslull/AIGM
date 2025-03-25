@@ -6,8 +6,8 @@ import com.marcuslull.aigm.gm.model.AIClientGroup;
 import com.marcuslull.aigm.gm.model.enums.AIName;
 import com.marcuslull.aigm.messaging.Messaging;
 import com.marcuslull.aigm.messaging.model.ChatMessage;
-import com.marcuslull.aigm.router.ResponseRouter;
-import com.marcuslull.aigm.router.model.AiResponse;
+import com.marcuslull.aigm.router.CommunicationRouter;
+import com.marcuslull.aigm.router.model.CommunicationPacket;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -25,17 +25,17 @@ public class AIChatMessaging implements Messaging {
         this.mapper = mapper;
     }
 
-    private ResponseRouter responseRouter;
+    private CommunicationRouter communicationRouter;
 
     @Autowired // Lazy setter DI to avoid circular DI on startup
-    public void setResponseRouter(@Lazy ResponseRouter responseRouter) {
-        this.responseRouter = responseRouter;
+    public void setResponseRouter(@Lazy CommunicationRouter communicationRouter) {
+        this.communicationRouter = communicationRouter;
     }
 
     @Override
     public void handle(ChatMessage chatMessage) throws JsonProcessingException {
 
-        AiResponse response;
+        CommunicationPacket response;
 
         if (chatMessage.hasPlayerMessage() && !chatMessage.hasGroupMessage()) {
             displayPlayerMessage(chatMessage);

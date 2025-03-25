@@ -3,7 +3,7 @@ package com.marcuslull.aigm.data.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcuslull.aigm.data.model.ResonanceSearch;
-import com.marcuslull.aigm.router.ResponseRouter;
+import com.marcuslull.aigm.router.CommunicationRouter;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -34,11 +34,11 @@ public class ResonanceRetrieval {
         this.mapper = mapper;
     }
 
-    private ResponseRouter responseRouter;
+    private CommunicationRouter communicationRouter;
 
     @Autowired // Lazy setter DI to avoid circular DI on startup
-    public void setResponseRouter(@Lazy ResponseRouter responseRouter) {
-        this.responseRouter = responseRouter;
+    public void setResponseRouter(@Lazy CommunicationRouter communicationRouter) {
+        this.communicationRouter = communicationRouter;
     }
 
     public List<Document> query(ResonanceSearch query) {
