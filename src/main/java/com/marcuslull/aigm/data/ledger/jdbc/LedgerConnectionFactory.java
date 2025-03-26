@@ -1,4 +1,4 @@
-package com.marcuslull.aigm.data.jdbc;
+package com.marcuslull.aigm.data.ledger.jdbc;
 
 import java.io.FileInputStream;
 import java.io.IOException;

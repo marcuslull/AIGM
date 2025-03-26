@@ -1,6 +1,5 @@
 package com.marcuslull.aigm.messaging.group;
 
-import com.marcuslull.aigm.gm.model.enums.AIName;
 import com.marcuslull.aigm.messaging.group.service.GroupMessageService;
 import com.marcuslull.aigm.router.CommunicationHandler;
 import com.marcuslull.aigm.router.model.CommunicationPacket;
@@ -18,8 +17,7 @@ public class GroupMessageHandler implements CommunicationHandler {
     @Override
     public void handle(CommunicationPacket communicationPacket) {
         System.out.println("NEW AI GROUP CONVERSATION");
-        AIName aiName = AIName.valueOf(communicationPacket.author());
-        groupMessageService.startConversation(aiName, communicationPacket.groupMessage());
+        groupMessageService.startConversation(communicationPacket);
     }
 
     @Override

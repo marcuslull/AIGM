@@ -1,6 +1,6 @@
-package com.marcuslull.aigm.data.service;
+package com.marcuslull.aigm.data.ledger.service;
 
-import com.marcuslull.aigm.data.model.LedgerSearch;
+import com.marcuslull.aigm.data.ledger.model.LedgerSearch;
 import org.springframework.stereotype.Service;
 
 @Service

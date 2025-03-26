@@ -1,4 +1,4 @@
-package com.marcuslull.aigm.data.model;
+package com.marcuslull.aigm.data.ledger.model;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package com.marcuslull.aigm;
 
-import com.marcuslull.aigm.data.DataIngestion;
 import com.marcuslull.aigm.data.ledger.LedgerDataHandler;
 import com.marcuslull.aigm.data.resonance.ResonanceDataHandler;
+import com.marcuslull.aigm.data.resonance.ingestion.DataIngestion;
 import com.marcuslull.aigm.gm.GmGroupCreator;
 import com.marcuslull.aigm.messaging.group.GroupMessageHandler;
 import com.marcuslull.aigm.messaging.player.PlayerMessageHandler;

@@ -74,13 +74,11 @@ public class SystemPrompts {
             * A lower confidence score indicates that some discussion may be needed to understand and achieve the purpose of the original groupMessage.
             
             ### vector database search (Name - Resonance)
-            "resonanceSearch":{"metaSearch":{"source":"title","session":"session number","tag":"tag"},"textSearch":"text to search for","response":null}
-            
-            * NOT YET IMPLEMENTED - DO NOT USE
+            "resonanceSearch":{"metaSearch":{"source":"","session":"","tag":""},"textSearch":"","response":null}
             
             * This is a vector database of all published materials with which you can do a similarity search.
             * There are four metadata keys to work with - these are all logical OR.
-            * Use a `null` value for keys that you dont wish to include in the search.
+            * Use a `null` value for keys that you dont wish to include in the metaSearch.
             * textSearch will be the field for search keywords.
             * The query response will be returned to you as a resonanceSearch with your original query and the response in the response field as a list of documents.
             * Soon you will have a structured query too perform to find proper metadata values to search for. This is not implemented yet.

@@ -6,17 +6,13 @@ import com.marcuslull.aigm.gm.prompts.SystemPrompts;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
-import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel;
 
 
 public class AIClientFactory {
-
-    private final VectorStore vectorStore;
     private final VertexAI vertexAI;
 
-    AIClientFactory(VectorStore vectorStore, VertexAI vertexAI) {
-        this.vectorStore = vectorStore;
+    AIClientFactory(VertexAI vertexAI) {
         this.vertexAI = vertexAI;
     }
 

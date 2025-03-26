@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class CommunicationRouter {
 
-    // Context class for strategy design pattern - handler interface = AiResponseHandler
+    // Context class for strategy design pattern - handler interface = CommunicationHandler
     public final static List<CommunicationHandler> handlers = new ArrayList<>();
 
     public void addHandler(CommunicationHandler handler) {
@@ -26,7 +26,7 @@ public class CommunicationRouter {
 
         if (handlers.isEmpty()) throw new RuntimeException("No response handlers available");
 
-        // aiResponse is null and so this is probably the start of the application
+        // communicationPacket is null and so this is probably the start of the application
         if (communicationPacket == null) {
             Optional<CommunicationHandler> handler =
                     handlers
@@ -34,10 +34,10 @@ public class CommunicationRouter {
                             .filter(h -> h.getClass() == PlayerMessageHandler.class)
                             .findFirst();
             handler.orElseThrow().handle(null);
-        }
-
-        for (CommunicationHandler handler : handlers) {
-            if (handler.canHandle(communicationPacket)) handler.handle(communicationPacket);
+        } else { // all other cases of communicationPacket
+            for (CommunicationHandler handler : handlers) {
+                if (handler.canHandle(communicationPacket)) handler.handle(communicationPacket);
+            }
         }
     }
 }

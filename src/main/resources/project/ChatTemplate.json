@@ -1,31 +1,16 @@
 {
-  "author": "ORATORIX, JUSTIVOR, CHRONOS, or ORBIS",
-  "playerMessage": {
-    "message": "message to the players"
-  },
-  "groupMessage": {
-    "target": "ORATORIX, JUSTIVOR, CHRONOS, or ORBIS",
-    "priority": "HIGH, MEDIUM, LOW",
-    "message": "message to the group member",
-    "context": "context of the message to the group member",
-    "uuid": "UUID for this message",
-    "relatedUuids": ["UUID", "another UUID", "more UUIDs"],
-    "confidence": 0.5
-  },
+  "author": "",
+  "playerMessage": null,
+  "groupMessage": null,
   "resonanceSearch": {
     "metaSearch": {
-      "source": "title",
-      "session": "session",
-      "tag": "tag"
+      "source": null,
+      "session": null,
+      "tag": ""
     },
-    "textSearch": "text to search for",
+    "textSearch": "",
     "response": null
   },
-  "ledgerSearch": {
-    "table": "table",
-    "where": "column",
-    "equalTo": "value",
-    "response": null
-  },
-  "timeStamp": "current instant"
+  "ledgerSearch": null,
+  "timeStamp": ""
 }

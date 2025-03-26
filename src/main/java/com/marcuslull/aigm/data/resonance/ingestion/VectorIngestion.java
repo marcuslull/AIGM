@@ -1,6 +1,5 @@
-package com.marcuslull.aigm.data.service;
+package com.marcuslull.aigm.data.resonance.ingestion;
 
-import com.marcuslull.aigm.data.DataIngestion;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.splitter.TextSplitter;
