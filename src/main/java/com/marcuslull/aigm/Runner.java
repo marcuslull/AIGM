@@ -63,7 +63,6 @@ public class Runner implements CommandLineRunner {
     }
 
     private void eventLoop() {
-        // kick off the app with an empty communication
-        communicationRouter.route(null);
+        communicationRouter.start();
     }
 }

@@ -35,11 +35,7 @@ public class GroupMessageService {
             System.out.println(communicationPacket.getAuthor() + ": " + communicationPacket.getGroupMessage());
             communicationPacket = communicationSender.send(communicationPacket);
 
-            // if the response has a group message element we can keep handling it here.
-            if (communicationPacket.hasGroupMessageOnly()) continue;
-
-            // and send the rest to be routed and handled as needed
-            communicationPacket.setGroupMessage(null);
+            // otherwise send it to the router for complete handling
             communicationRouter.route(communicationPacket);
         }
     }

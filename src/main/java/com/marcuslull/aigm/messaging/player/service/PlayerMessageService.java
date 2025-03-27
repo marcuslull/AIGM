@@ -32,16 +32,13 @@ public class PlayerMessageService {
     }
 
     public void startConversation(CommunicationPacket communicationPacket) {
-        // start the player to AI communication loop
+
+        // probably app startup we just need a placeholder packet to pass along
+        if (communicationPacket == null) {
+            communicationPacket = new CommunicationPacket(
+                    "PLAYER",null,null,null,null);
+        }
         conversationLoop(communicationPacket);
-
-        // Since the whole app is predicated on player communication the player conversation loop state
-        // will determine the whole apps state.
-
-        // exited the main communication loop via player typing 'quit'. Close up the app
-        System.out.println("Shutting down AI GM...");
-        scanner.close();
-        context.close();
     }
 
     private void conversationLoop(CommunicationPacket communicationPacket) {
@@ -50,30 +47,35 @@ public class PlayerMessageService {
 
         while (true) {
 
-            // display the output of the previous response unless null (probably the start of the app)
-            if (communicationPacket != null && communicationPacket.hasPlayerMessage()) {
+            if (!communicationPacket.getAuthor().equals("PLAYER")) {
                 System.out.println(communicationPacket.getAuthor() + ": " + communicationPacket.getPlayerMessage().getMessage());
             }
 
             // get user prompt or quit
             messageFromPlayer = scanner.nextLine();
-            if (messageFromPlayer.equalsIgnoreCase("quit")) break;
+            if (messageFromPlayer.equalsIgnoreCase("quit")) {
+                shutDownApp();
+                break;
+            }
 
+            // TODO: WHY create a new packet on first startup if we already have one we could just add player message to.
             // compose prompt into a communication and send to AI
             communicationPacket = new CommunicationPacket(
-                    null,
+                    "PLAYER",
                     new PlayerMessage(messageFromPlayer),
                     null,
                     null,
                     null);
             communicationPacket = communicationSender.send(communicationPacket);
 
-            // if the response has a player message element we can keep handling it here.
-            if (communicationPacket.hasPlayerMessageOnly()) continue;
-
-            // and send the rest to be routed and handled as needed
-            communicationPacket.setPlayerMessage(null);
+            // or send it back to the router for complete handling
             communicationRouter.route(communicationPacket);
         }
+    }
+
+    private void shutDownApp() {
+        System.out.println("Shutting down AI GM...");
+        scanner.close();
+        context.close();
     }
 }

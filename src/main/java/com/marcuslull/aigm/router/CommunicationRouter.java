@@ -23,21 +23,30 @@ public class CommunicationRouter {
     }
 
     public void route(CommunicationPacket communicationPacket) {
-
         if (handlers.isEmpty()) throw new RuntimeException("No response handlers available");
 
-        // communicationPacket is null and so this is probably the start of the application
-        if (communicationPacket == null) {
-            Optional<CommunicationHandler> handler =
-                    handlers
-                            .stream()
-                            .filter(h -> h.getClass() == PlayerMessageHandler.class)
-                            .findFirst();
-            handler.orElseThrow().handle(null);
-        } else { // all other cases of communicationPacket
-            for (CommunicationHandler handler : handlers) {
-                if (handler.canHandle(communicationPacket)) handler.handle(communicationPacket);
-            }
+        System.out.println("ROUTER_LOG: " + communicationPacket);
+
+        // drop all empty packets
+        if (communicationPacket.isEmpty()) return;
+
+        // route the packet to anyone that can handle it
+        for (CommunicationHandler handler : handlers) {
+            // TODO: this must be loop async
+                if (handler.canHandle(communicationPacket)) {
+                    handler.handle(communicationPacket);
+                }
         }
+    }
+
+    public void start() {
+        // app start - lets notify PlayerMessaging
+        Optional<CommunicationHandler> handler = handlers
+                        .stream()
+                        .filter(h -> h.getClass() == PlayerMessageHandler.class)
+                        .findFirst();
+
+        PlayerMessageHandler playerMessageHandler = (PlayerMessageHandler) handler.orElseThrow();
+        playerMessageHandler.handle(null);
     }
 }
