@@ -81,11 +81,11 @@ public class CommunicationPacket {
     }
 
     public boolean hasPlayerMessageOnly() {
-        return this.hasPlayerMessage() && !(this.hasGroupMessage() && this.hasResonanceSearch() && this.hasLedgerSearch());
+        return this.hasPlayerMessage() && !this.hasGroupMessage() && !this.hasResonanceSearch() && !this.hasLedgerSearch();
     }
 
     public boolean hasGroupMessageOnly() {
-        return this.hasGroupMessage() && !(this.hasPlayerMessage() && this.hasResonanceSearch() && this.hasLedgerSearch());
+        return this.hasGroupMessage() && !this.hasPlayerMessage() && !this.hasResonanceSearch() && !this.hasLedgerSearch();
     }
 
     public boolean isEmpty() {

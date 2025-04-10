@@ -6,6 +6,7 @@ import com.marcuslull.aigm.router.model.CommunicationPacket;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.ai.vectorstore.filter.Filter;
 import org.springframework.ai.vectorstore.filter.FilterExpressionTextParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,8 @@ public class ResonanceRetrieval {
 
         // add in results, they should be sent back with the original query.
         communicationPacket.getResonanceSearch().setResponse(queryResponseString);
+        System.out.println("RESONANCE SEARCH - " + communicationPacket.getAuthor() + ": " + communicationPacket);
+
         communicationSender.send(communicationPacket);
     }
 
@@ -43,7 +46,10 @@ public class ResonanceRetrieval {
         String tagValue = query.getMetaSearch().getTag();
 
         FilterExpressionTextParser parser = new FilterExpressionTextParser();
-        var parsed = parser.parse("source == '" + sourceValue + "' || session == '" + sessionValue + "' || tag == '" + tagValue + "'");
+
+        Filter.Expression parsed;
+        if (sourceValue == null && sessionValue == null && tagValue == null) parsed = null;
+        else { parsed = parser.parse("source == '" + sourceValue + "' || session == '" + sessionValue + "' || tag == '" + tagValue + "'"); }
 
         SearchRequest searchRequest =
                 SearchRequest

@@ -25,28 +25,41 @@ public class CommunicationRouter {
     public void route(CommunicationPacket communicationPacket) {
         if (handlers.isEmpty()) throw new RuntimeException("No response handlers available");
 
-        System.out.println("ROUTER_LOG: " + communicationPacket);
+//        System.out.println("ROUTER_LOG: " + communicationPacket);
 
         // drop all empty packets
         if (communicationPacket.isEmpty()) return;
 
+        // there could be more than one channel per communication so let's isolate them
+        explode(communicationPacket);
+    }
+
+    public void explode(CommunicationPacket communicationPacket) {
+        if (communicationPacket.hasPlayerMessage()) egress(new CommunicationPacket(communicationPacket.getAuthor(), communicationPacket.getPlayerMessage(), null, null, null));
+        if (communicationPacket.hasGroupMessage()) egress(new CommunicationPacket(communicationPacket.getAuthor(), null, communicationPacket.getGroupMessage(), null, null));
+        if (communicationPacket.hasResonanceSearch()) egress(new CommunicationPacket(communicationPacket.getAuthor(), null, null, communicationPacket.getResonanceSearch(), null));
+        if (communicationPacket.hasLedgerSearch()) egress(new CommunicationPacket(communicationPacket.getAuthor(), null, null, null, communicationPacket.getLedgerSearch()));
+    }
+
+    private void egress(CommunicationPacket communicationPacket) {
         // route the packet to anyone that can handle it
         for (CommunicationHandler handler : handlers) {
-            // TODO: this must be loop async
-                if (handler.canHandle(communicationPacket)) {
-                    handler.handle(communicationPacket);
-                }
+            if (handler.canHandle(communicationPacket)) {
+                Thread thread = new Thread(() -> handler.handle(communicationPacket));
+                thread.start();
+            }
         }
     }
 
     public void start() {
-        // app start - lets notify PlayerMessaging
-        Optional<CommunicationHandler> handler = handlers
-                        .stream()
+
+        Optional<CommunicationHandler> handler = handlers.stream()
                         .filter(h -> h.getClass() == PlayerMessageHandler.class)
                         .findFirst();
 
         PlayerMessageHandler playerMessageHandler = (PlayerMessageHandler) handler.orElseThrow();
-        playerMessageHandler.handle(null);
+        Thread thread = new Thread(() -> playerMessageHandler.handle(null));
+        thread.setName("mainPlayerLoop");
+        thread.start();
     }
 }

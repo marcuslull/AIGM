@@ -30,13 +30,15 @@ public class GroupMessageService {
 
     private void conversationLoop(CommunicationPacket communicationPacket) {
 
-        while (true) {
-            // display the output for logging purposes
-            System.out.println(communicationPacket.getAuthor() + ": " + communicationPacket.getGroupMessage());
-            communicationPacket = communicationSender.send(communicationPacket);
+        // display
+        System.out.println("GROUP MESSAGE - " + communicationPacket.getAuthor() + ": " + communicationPacket.getGroupMessage());
 
-            // otherwise send it to the router for complete handling
-            communicationRouter.route(communicationPacket);
-        }
+        // get response
+        communicationPacket = communicationSender.send(communicationPacket);
+
+        // send it back to the router
+        communicationRouter.route(communicationPacket);
+
+        // virtual thread dies naturally when runnable completes
     }
 }

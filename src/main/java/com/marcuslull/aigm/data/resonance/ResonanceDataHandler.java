@@ -18,7 +18,6 @@ public class ResonanceDataHandler implements CommunicationHandler {
 
     @Override
     public void handle(CommunicationPacket communicationPacket) {
-        System.out.println("NEW AI RESONANCE SEARCH");
         resonanceRetrieval.process(communicationPacket);
     }
 

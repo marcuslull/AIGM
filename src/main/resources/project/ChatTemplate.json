@@ -1,16 +1,8 @@
 {
-  "author": "",
-  "playerMessage": null,
-  "groupMessage": null,
-  "resonanceSearch": {
-    "metaSearch": {
-      "source": null,
-      "session": null,
-      "tag": ""
-    },
-    "textSearch": "",
-    "response": null
-  },
-  "ledgerSearch": null,
-  "timeStamp": ""
+  "author": null,
+  "playerMessage":{"message": null},
+  "groupMessage": {"source": null, "target":  null, "priority": null, "message":  null, "context": null, "uuid": null, "relatedUuids": null, "confidence":  null},
+  "resonanceSearch": {"metaSearch": {"source": null, "session": null, "tag": null}, "textSearch": null, "response": null},
+  "ledgerSearch": {"table": null, "where": null, "equalTo": null, "response": null},
+  "timeStamp": null
 }

@@ -16,7 +16,6 @@ public class GroupMessageHandler implements CommunicationHandler {
 
     @Override
     public void handle(CommunicationPacket communicationPacket) {
-        System.out.println("NEW AI GROUP CONVERSATION");
         groupMessageService.startConversation(communicationPacket);
     }
 

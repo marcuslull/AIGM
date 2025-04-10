@@ -16,7 +16,8 @@ public class PlayerMessageService {
 
     private final ConfigurableApplicationContext context;
     private final CommunicationSender communicationSender;
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner;
+    private boolean shutdownState = false;
 
     private CommunicationRouter communicationRouter;
 
@@ -29,47 +30,36 @@ public class PlayerMessageService {
     public PlayerMessageService(ConfigurableApplicationContext context, CommunicationSender communicationSender) {
         this.context = context;
         this.communicationSender = communicationSender;
+        this.scanner = new Scanner(System.in);
     }
 
-    public void startConversation(CommunicationPacket communicationPacket) {
-
-        // probably app startup we just need a placeholder packet to pass along
-        if (communicationPacket == null) {
-            communicationPacket = new CommunicationPacket(
-                    "PLAYER",null,null,null,null);
-        }
-        conversationLoop(communicationPacket);
-    }
-
-    private void conversationLoop(CommunicationPacket communicationPacket) {
+    public void conversationLoop(CommunicationPacket communicationPacket) {
 
         String messageFromPlayer;
 
-        while (true) {
+        // start the main player loop to keep a responsive connection between AI and player
+        if (Thread.currentThread().getName().equals("mainPlayerLoop")) {
+            while (true) {
+                messageFromPlayer = getInput(scanner); // get player input from console
+                if (shutdownState) {
+                    break;
+                }
+                communicationPacket = composeMessage(messageFromPlayer); // create a packet containing player message
+                communicationPacket = communicationSender.send(communicationPacket); // send the packet to Oratorix
+                displayMessage(communicationPacket); // display the response
 
-            if (!communicationPacket.getAuthor().equals("PLAYER")) {
-                System.out.println(communicationPacket.getAuthor() + ": " + communicationPacket.getPlayerMessage().getMessage());
+                // if the response is more than just a player response send it to the router
+                if (communicationPacket.hasPlayerMessageOnly()) {
+                    continue;
+                }
+                communicationPacket.setPlayerMessage(null);
+                communicationRouter.route(communicationPacket);
             }
 
-            // get user prompt or quit
-            messageFromPlayer = scanner.nextLine();
-            if (messageFromPlayer.equalsIgnoreCase("quit")) {
-                shutDownApp();
-                break;
-            }
-
-            // TODO: WHY create a new packet on first startup if we already have one we could just add player message to.
-            // compose prompt into a communication and send to AI
-            communicationPacket = new CommunicationPacket(
-                    "PLAYER",
-                    new PlayerMessage(messageFromPlayer),
-                    null,
-                    null,
-                    null);
-            communicationPacket = communicationSender.send(communicationPacket);
-
-            // or send it back to the router for complete handling
-            communicationRouter.route(communicationPacket);
+            // out of the main loop - game over :(
+            shutDownApp();
+        } else {
+            displayMessage(communicationPacket);
         }
     }
 
@@ -77,5 +67,28 @@ public class PlayerMessageService {
         System.out.println("Shutting down AI GM...");
         scanner.close();
         context.close();
+    }
+
+    private void displayMessage(CommunicationPacket communicationPacket) {
+        if (communicationPacket.hasPlayerMessage() && !communicationPacket.getAuthor().equals("PLAYER")) {
+            System.out.println("PLAYER MESSAGE - " + communicationPacket.getAuthor() + ": " + communicationPacket.getPlayerMessage().getMessage());
+        }
+    }
+
+    private String getInput(Scanner scanner) {
+        String messageFromPlayer = scanner.nextLine();
+        if (messageFromPlayer.equalsIgnoreCase("quit")) {
+            this.shutdownState = true;
+        }
+        return messageFromPlayer;
+    }
+
+    private CommunicationPacket composeMessage(String messageFromPlayer) {
+        return new CommunicationPacket(
+                "PLAYER",
+                new PlayerMessage(messageFromPlayer),
+                null,
+                null,
+                null);
     }
 }

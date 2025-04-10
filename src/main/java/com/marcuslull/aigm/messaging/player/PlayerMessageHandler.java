@@ -16,8 +16,7 @@ public class PlayerMessageHandler implements CommunicationHandler {
 
     @Override
     public void handle(CommunicationPacket communicationPacket) {
-        System.out.println("NEW PLAYER CONVERSATION");
-        playerMessageService.startConversation(communicationPacket);
+        playerMessageService.conversationLoop(communicationPacket);
     }
 
     @Override
