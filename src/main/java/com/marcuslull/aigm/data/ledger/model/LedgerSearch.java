@@ -1,20 +1,41 @@
 package com.marcuslull.aigm.data.ledger.model;
 
-import java.util.List;
+public class LedgerSearch {
 
-public record LedgerSearch(String table, String where, String equalTo, List<String> response) {
+    private String category;
+    private String name;
+    private String response;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
+    }
+
     @Override
     public String toString() {
         return "LedgerSearch{" +
-                "table='" + table + '\'' +
-                ", where='" + where + '\'' +
-                ", equalTo='" + equalTo + '\'' +
+                "category='" + category + '\'' +
+                ", name='" + name + '\'' +
                 ", response='" + response + '\'' +
                 '}';
     }
-
-    public LedgerSearch copyWithResults(List<String> response) {
-        return new LedgerSearch(this.table, this.where, this.equalTo, response);
-    }
 }
-

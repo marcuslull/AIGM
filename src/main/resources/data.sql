@@ -1,0 +1,1 @@
+INSERT INTO item (item_name, description, item_type) VALUES ('breast plate', 'a normal breast plate', 'Armor');
