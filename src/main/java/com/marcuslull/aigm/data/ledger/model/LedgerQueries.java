@@ -4,7 +4,7 @@ public class LedgerQueries {
 
     public static final String armor =
             """
-            SELECT * FROM item WHERE item_type = 'Armor';
+            SELECT * FROM item WHERE item_type = 'armor';
             """;
 
     public static String armorByName =

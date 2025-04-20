@@ -1,4 +1,4 @@
--- AI GENERATED SCHEMA!!!
+-- AI GENERATED DDL!!!
 
 
 -- Optional: Create a schema to namespace the tables
@@ -111,9 +111,19 @@ CREATE TABLE item (
                       description TEXT,
                       weight NUMERIC(6, 2) DEFAULT 0 CHECK (weight >= 0), -- Weight in pounds/kg
                       cost_cp INTEGER DEFAULT 0 CHECK (cost_cp >= 0), -- Cost in copper pieces for granularity
-                      item_type VARCHAR(50) NOT NULL CHECK (item_type IN ('Weapon', 'Armor', 'Shield', 'Potion', 'Scroll', 'Wondrous Item', 'Gear', 'Tool', 'Currency')),
-                      requires_attunement BOOLEAN DEFAULT FALSE
-    -- Specific properties like damage, AC bonus etc. could be here, or in linked tables if very complex (e.g., weapon_properties, armor_properties)
+                      item_type VARCHAR(50) NOT NULL CHECK (item_type IN ('weapon', 'armor', 'shield', 'potion', 'scroll', 'wondrous', 'gear', 'tool', 'currency')),
+                      requires_attunement BOOLEAN DEFAULT FALSE,
+                    armor_proficiency VARCHAR(50) CHECK (armor_proficiency IN ('light', 'medium', 'heavy', 'shield')),
+                    armor_class VARCHAR(50),
+                    armor_strength_requirement VARCHAR(50),
+                    armor_stealth VARCHAR(50) CHECK (armor_stealth IN ('disadvantage')),
+                    armor_don_doff VARCHAR(50),
+                    weapon_proficiency VARCHAR(50) CHECK (weapon_proficiency IN ('simple melee', 'simple ranged', 'martial melee', 'martial ranged')),
+                    weapon_damage VARCHAR(50),
+                    weapon_damage_type VARCHAR(50) CHECK ( weapon_damage_type IN ('bludgeoning', 'piercing', 'slashing')),
+                    weapon_properties VARCHAR(255),
+                    capacity VARCHAR(50),
+                    movement_speed INTEGER DEFAULT 0 CHECK (movement_speed >= 0)
 );
 COMMENT ON TABLE item IS 'Catalog of all possible items (weapons, armor, gear, etc.).';
 CREATE INDEX idx_item_name ON item(item_name);
@@ -150,7 +160,7 @@ COMMENT ON TABLE language IS 'Defines available languages.';
 CREATE TABLE tool (
                       tool_id SERIAL PRIMARY KEY,
                       name VARCHAR(100) NOT NULL UNIQUE, -- e.g., Thieves' Tools, Cook's Utensils, Lute
-                      tool_type VARCHAR(50) CHECK (tool_type IN ('Artisan', 'Gaming Set', 'Musical Instrument', 'Other'))
+                      tool_type VARCHAR(50) CHECK (tool_type IN ('artisan', 'gaming', 'musical', 'other'))
 );
 COMMENT ON TABLE tool IS 'Defines available tools characters can be proficient with.';
 
