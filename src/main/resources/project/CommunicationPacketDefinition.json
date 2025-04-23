@@ -4,5 +4,9 @@
   "groupMessage": {"source": null, "target":  null, "priority": null, "message":  null, "context": null, "uuid": null, "relatedUuids": null, "confidence":  null},
   "resonanceSearch": {"metaSearch": {"source": null, "session": null, "tag": null}, "textSearch": null, "response": null},
   "ledgerSearch": {"category": null, "name": null, "response": null},
+  "tools": [
+    {"roll":  {"name":  null, "modifier":  null, "advantage": null, "disadvantage": null, "custom": [null, null, null, null, null, null, null], "result":  null}
+    }
+  ],
   "timeStamp": null
 }

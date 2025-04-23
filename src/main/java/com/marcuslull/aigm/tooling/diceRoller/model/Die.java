@@ -2,7 +2,7 @@ package com.marcuslull.aigm.tooling.diceRoller.model;
 
 import java.util.Random;
 
-public class Die implements Rollable{
+public class Die {
 
     private final int sides;
     private final Random random;
@@ -12,12 +12,18 @@ public class Die implements Rollable{
         this.random = new Random();
     }
 
-    @Override
     public int roll() {
         return random.nextInt(1,sides + 1);
     }
 
     public int getSides() {
         return sides;
+    }
+
+    @Override
+    public String toString() {
+        return "Die{" +
+                "sides=" + sides +
+                '}';
     }
 }

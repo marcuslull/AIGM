@@ -76,6 +76,19 @@ public class SystemPrompts {
             * name can be null if you want to do a general search returning many results.
             * response will contain the DB response after the query has been returned.
             
+            #### tools
+            
+            ##### Dice Roller
+            * name is the name of the PC, NPC, or 'GM' the roll is on behalf of.
+            * modifier is the total of all modifiers to add or subtract from the roll.
+            * advantage/disadvantage are boolean and if set will ignore anything in the custom field.
+            * to short circuit the custom field on a regular d20 roll you can set both advantage/disadvantage to true.
+            * custom represents an array of length 7 representing the count of each of the common dice to roll.
+            * index 0 = d4. index 1 = d6, index 2 = d8, index 3 = d10, index 4 = d12, index 5 = d20, index 6 = d100.
+            * result will be the roll result after it is processed and sent back to you.
+            * the result is an array that represents each die roll in order.
+            * appended to the result array is the subtotal of all rolls at index -3, any modifiers that were declared at index -2, the net total (sub + modifiers) at index -1
+            
             
             ### General Rules:
             

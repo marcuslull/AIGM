@@ -4,6 +4,7 @@ import com.marcuslull.aigm.data.ledger.model.LedgerSearch;
 import com.marcuslull.aigm.data.resonance.model.ResonanceSearch;
 import com.marcuslull.aigm.messaging.group.model.GroupMessage;
 import com.marcuslull.aigm.messaging.player.model.PlayerMessage;
+import com.marcuslull.aigm.tooling.model.Tools;
 
 public class CommunicationPacket {
 
@@ -12,16 +13,18 @@ public class CommunicationPacket {
     private GroupMessage groupMessage;
     private ResonanceSearch resonanceSearch;
     private LedgerSearch ledgerSearch;
+    private Tools tooling;
 
     public CommunicationPacket() {
     }
 
-    public CommunicationPacket(String author, PlayerMessage playerMessage, GroupMessage groupMessage, ResonanceSearch resonanceSearch, LedgerSearch ledgerSearch) {
+    public CommunicationPacket(String author, PlayerMessage playerMessage, GroupMessage groupMessage, ResonanceSearch resonanceSearch, LedgerSearch ledgerSearch, Tools tooling) {
         this.author = author;
         this.playerMessage = playerMessage;
         this.groupMessage = groupMessage;
         this.resonanceSearch = resonanceSearch;
         this.ledgerSearch = ledgerSearch;
+        this.tooling = tooling;
     }
 
     public String getAuthor() {
@@ -64,6 +67,14 @@ public class CommunicationPacket {
         this.ledgerSearch = ledgerSearch;
     }
 
+    public Tools getTooling() {
+        return tooling;
+    }
+
+    public void setTooling(Tools tooling) {
+        this.tooling = tooling;
+    }
+
     public boolean hasPlayerMessage() {
         return (playerMessage != null);
     }
@@ -78,6 +89,10 @@ public class CommunicationPacket {
 
     public boolean hasLedgerSearch() {
         return (ledgerSearch != null);
+    }
+
+    public boolean hasTooling() {
+        return (tooling != null);
     }
 
     public boolean hasPlayerMessageOnly() {
@@ -100,6 +115,7 @@ public class CommunicationPacket {
                 ", groupMessage=" + groupMessage +
                 ", resonanceSearch=" + resonanceSearch +
                 ", ledgerSearch=" + ledgerSearch +
+                ", tooling=" + tooling +
                 '}';
     }
 }

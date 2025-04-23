@@ -4,61 +4,61 @@ public class LedgerQueries {
 
     public static final String armor =
             """
-            SELECT * FROM item WHERE item_type = 'armor';
+            SELECT * FROM rules.dnd5e.item WHERE item_type = 'armor';
             """;
 
     public static String armorByName =
             """
-            SELECT * FROM item WHERE item_name = ?;
+            SELECT * FROM rules.dnd5e.item WHERE item_name = ?;
             """;
 
     public static final String character =
             """
-            SELECT * FROM character;
+            SELECT * FROM rules.dnd5e.character;
             """;
 
     public static String characterByName =
             """
-            SELECT * FROM character WHERE character_name = ?;
+            SELECT * FROM rules.dnd5e.character WHERE character_name = ?;
             """;
 
     public static final String feat =
             """
-            SELECT * FROM feat;
+            SELECT * FROM rules.dnd5e.feat;
             """;
 
     public static String featByName =
             """
-            SELECT * FROM feat WHERE name = ?;
+            SELECT * FROM rules.dnd5e.feat WHERE name = ?;
             """;
 
     public static final String item =
             """
-            SELECT * FROM item;
+            SELECT * FROM rules.dnd5e.item;
             """;
 
     public static String itemByName =
             """
-            SELECT * FROM item WHERE name = ?;
+            SELECT * FROM rules.dnd5e.item WHERE name = ?;
             """;
 
     public static final String spell =
             """
-            SELECT * FROM spell;
+            SELECT * FROM rules.dnd5e.spell;
             """;
 
     public static String spellByName =
             """
-            SELECT * FROM spell WHERE spell_name = ?;
+            SELECT * FROM rules.dnd5e.spell WHERE spell_name = ?;
             """;
 
     public static final String weapon =
             """
-            SELECT * FROM item WHERE item_type = 'Weapon';
+            SELECT * FROM rules.dnd5e.item WHERE item_type = 'weapon';
             """;
 
     public static String weaponByName =
             """
-            SELECT * FROM item WHERE item_name = ?;
+            SELECT * FROM rules.dnd5e.item WHERE item_name = ?;
             """;
 }

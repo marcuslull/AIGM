@@ -7,6 +7,7 @@ import com.marcuslull.aigm.gm.GmGroupCreator;
 import com.marcuslull.aigm.messaging.group.GroupMessageHandler;
 import com.marcuslull.aigm.messaging.player.PlayerMessageHandler;
 import com.marcuslull.aigm.router.CommunicationRouter;
+import com.marcuslull.aigm.tooling.diceRoller.DiceRoller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -56,6 +57,7 @@ public class Runner implements CommandLineRunner {
         communicationRouter.addHandler(context.getBean(GroupMessageHandler.class));
         communicationRouter.addHandler(context.getBean(ResonanceDataHandler.class));
         communicationRouter.addHandler(context.getBean(LedgerDataHandler.class));
+        communicationRouter.addHandler(context.getBean(DiceRoller.class));
         System.out.println("Response handlers registered...");
 
         System.out.println("\nWelcome to AI Game Master!");

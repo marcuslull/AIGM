@@ -25,7 +25,7 @@ public class CommunicationRouter {
     public void route(CommunicationPacket communicationPacket) {
         if (handlers.isEmpty()) throw new RuntimeException("No response handlers available");
 
-//        System.out.println("ROUTER_LOG: " + communicationPacket);
+        System.out.println("ROUTER_LOG: " + communicationPacket);
 
         // drop all empty packets
         if (communicationPacket.isEmpty()) return;
@@ -35,10 +35,11 @@ public class CommunicationRouter {
     }
 
     public void explode(CommunicationPacket communicationPacket) {
-        if (communicationPacket.hasPlayerMessage()) egress(new CommunicationPacket(communicationPacket.getAuthor(), communicationPacket.getPlayerMessage(), null, null, null));
-        if (communicationPacket.hasGroupMessage()) egress(new CommunicationPacket(communicationPacket.getAuthor(), null, communicationPacket.getGroupMessage(), null, null));
-        if (communicationPacket.hasResonanceSearch()) egress(new CommunicationPacket(communicationPacket.getAuthor(), null, null, communicationPacket.getResonanceSearch(), null));
-        if (communicationPacket.hasLedgerSearch()) egress(new CommunicationPacket(communicationPacket.getAuthor(), null, null, null, communicationPacket.getLedgerSearch()));
+        if (communicationPacket.hasPlayerMessage()) egress(new CommunicationPacket(communicationPacket.getAuthor(), communicationPacket.getPlayerMessage(), null, null, null, null));
+        if (communicationPacket.hasGroupMessage()) egress(new CommunicationPacket(communicationPacket.getAuthor(), null, communicationPacket.getGroupMessage(), null, null, null));
+        if (communicationPacket.hasResonanceSearch()) egress(new CommunicationPacket(communicationPacket.getAuthor(), null, null, communicationPacket.getResonanceSearch(), null, null));
+        if (communicationPacket.hasLedgerSearch()) egress(new CommunicationPacket(communicationPacket.getAuthor(), null, null, null, communicationPacket.getLedgerSearch(), null));
+        if (communicationPacket.hasTooling()) egress(new CommunicationPacket(communicationPacket.getAuthor(), null, null, null, null, communicationPacket.getTooling()));
     }
 
     private void egress(CommunicationPacket communicationPacket) {
