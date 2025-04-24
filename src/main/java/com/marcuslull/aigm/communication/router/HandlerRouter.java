@@ -1,17 +1,13 @@
 package com.marcuslull.aigm.communication.router;
 
+import com.marcuslull.aigm.communication.destinations.Destination;
 import com.marcuslull.aigm.communication.protocol.Packet;
-import com.marcuslull.aigm.communication.protocol.Payload;
-import com.marcuslull.aigm.messaging.player.PlayerMessageHandler;
-import com.marcuslull.aigm.router.CommunicationHandler;
-import com.marcuslull.aigm.router.model.CommunicationPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class HandlerRouter implements Router{
@@ -42,16 +38,10 @@ public class HandlerRouter implements Router{
         if (handlers.isEmpty()) throw new RuntimeException("No response handlers available");
         if(!packet.hasPayloadCollection()) throw new RuntimeException("No payload found in packet");
 
-        // match payloads to handlers, log and send
+        // match payloads to handlers and send
         packet.getPayloadCollection().forEach(payload ->
                 handlers.stream().filter(handler ->
-                        handler.canHandle(payload))
-                        .findFirst()
-                        .isPresent(match -> {
-                            Thread thread = new Thread(() -> match.handle(payload)).start();
-                            logger.debug("NEW HANDLER THREAD: {} - HANDLER: {} - PAYLOAD: {}",
-                                    thread.getName(), match.getClass.getSimpleName(), payload);
-                        }));
+                        handler.canHandle(payload)).findAny().orElseThrow().handleAsync(payload));
 
         return packet;
     }

@@ -1,6 +1,7 @@
 package com.marcuslull.aigm.communication.router;
 
 
+import com.marcuslull.aigm.communication.destinations.Destination;
 import com.marcuslull.aigm.communication.protocol.Packet;
 
 public interface Router {

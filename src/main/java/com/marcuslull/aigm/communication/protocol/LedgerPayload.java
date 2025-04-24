@@ -10,6 +10,6 @@ public class LedgerPayload implements Payload{
 
     @Override
     public boolean isLedgerPayload() {
-        return Payload.super.isLedgerPayload();
+        return true;
     }
 }
