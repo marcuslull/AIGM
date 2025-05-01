@@ -1,7 +1,7 @@
 package com.marcuslull.aigm.communication.destinations;
 
 
-public interface AIModel extends Destination{
+public interface Model extends Destination{
 
     default boolean isNarrativeAI() {
         return false;
