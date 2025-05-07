@@ -2,17 +2,14 @@ package com.marcuslull.aigm.comms.receivers;
 
 import com.marcuslull.aigm.comms.Receiver;
 import com.marcuslull.aigm.comms.enums.ConsoleNameEnum;
+import org.springframework.stereotype.Service;
 
 import java.io.PrintStream;
 
+@Service
 public abstract class AbstractConsoleReceiver implements Receiver {
-    private ConsoleNameEnum name;
-    private PrintStream printStream;
-
-    public AbstractConsoleReceiver(ConsoleNameEnum name, PrintStream printStream) {
-        this.name = name;
-        this.printStream = printStream;
-    }
+    protected ConsoleNameEnum name;
+    protected PrintStream printStream;
 
     public ConsoleNameEnum getName() {
         return name;

@@ -1,10 +1,9 @@
 package com.marcuslull.aigm.comms.receivers;
 
 import com.google.cloud.vertexai.VertexAI;
+import com.marcuslull.aigm.comms.*;
 import com.marcuslull.aigm.comms.Package;
-import com.marcuslull.aigm.comms.Payload;
-import com.marcuslull.aigm.comms.Router;
-import com.marcuslull.aigm.comms.Sender;
+import com.marcuslull.aigm.comms.enums.AINameEnum;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
@@ -43,28 +42,32 @@ public class VertexAIModel extends AbstractAIReceiver implements Sender {
 
     @Override
     public boolean canHandle(Payload payload) {
-        return payload.getReceiver() instanceof VertexAIModel &&
-                ((VertexAIModel) payload.getReceiver()).getName() != null &&
-                ((VertexAIModel) payload.getReceiver()).getName() == super.name;
+        return AINameEnum.fromString(payload.getReceiver()) != null;
     }
 
     @Override
     public void handle(Payload payload) {
-        // convert to JSON
-        // escape JSON brackets
-        // deliver it to the model via chatClient with .entity(<?> implements Package)
-        // send(package)
+        // TODO: convert to JSON
+        // TODO: escape JSON brackets
+        // TODO: deliver it to the model via chatClient with .entity(<?> implements Package)
+        // TODO: send(package)
     }
 
     @Override
     public void send(Package pkg) {
-        // iterate through routerList
-        // router.route(pkg)
+        // TODO: iterate through routerList
+        // TODO: router.route(pkg)
     }
 
     @Override
     public List<Router> getRouters() {
         return routers;
+    }
+
+    @Override
+    public void registerWithDirectory() {
+        Directory.addReceiver(this);
+        Directory.addSender(this);
     }
 
     public void setRouters(List<Router> routers) {
@@ -110,4 +113,5 @@ public class VertexAIModel extends AbstractAIReceiver implements Sender {
     public void setAdvisors(List<Advisor> advisors) {
         this.advisors = advisors;
     }
+
 }

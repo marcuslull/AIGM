@@ -7,7 +7,7 @@ import java.util.UUID;
 public interface Payload {
     UUID getUUID();
     Instant getCreated();
-    Receiver getReceiver();
-    Sender getSender();
+    String getReceiver();
+    String getSender();
     Map<String, String> getData();
 }

@@ -2,18 +2,15 @@ package com.marcuslull.aigm.comms.receivers;
 
 import com.marcuslull.aigm.comms.Receiver;
 import com.marcuslull.aigm.comms.enums.DataNameEnum;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+@Service
 public abstract class AbstractDataReceiver implements Receiver {
-    private DataNameEnum name;
-    private Map<String, String> connectionInformation;
-    private Map<String, String> queryProperties;
-
-    public AbstractDataReceiver(DataNameEnum name, Map<String, String> connectionInformation) {
-        this.name = name;
-        this.connectionInformation = connectionInformation;
-    }
+    public DataNameEnum name;
+    protected Map<String, String> connectionInformation;
+    protected Map<String, String> queryProperties;
 
     public DataNameEnum getName() {
         return name;
