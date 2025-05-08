@@ -6,6 +6,8 @@ import com.marcuslull.aigm.comms.Router;
 import com.marcuslull.aigm.comms.Sender;
 import com.marcuslull.aigm.comms.directory.Directory;
 import com.marcuslull.aigm.comms.enums.DataNameEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.List;
 public class VectorDatabaseService extends AbstractDataReceiver implements Sender {
 
     // from super: DataNameEnum name, Map<String, String> connectionInformation, Map<String, String> queryProperties
+    private final Logger logger = LoggerFactory.getLogger(VectorDatabaseService.class);
+
 
     @Override
     public boolean canHandle(Payload payload) {
@@ -22,7 +26,7 @@ public class VectorDatabaseService extends AbstractDataReceiver implements Sende
 
     @Override
     public void handle(Payload payload) {
-        // TODO: compose and send query
+        logger.info("{} - Handling Payload: {}", this.getClass().getSimpleName(), payload.getUUID());
     }
 
     @Override
@@ -37,6 +41,7 @@ public class VectorDatabaseService extends AbstractDataReceiver implements Sende
 
     @Override
     public void registerWithDirectory() {
+        logger.info("{} - Registering with Directory", this.getClass().getSimpleName());
         Directory.addReceiver(this);
         Directory.addSender(this);
     }

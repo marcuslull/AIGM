@@ -1,70 +1,52 @@
 package com.marcuslull.aigm;
 
-import com.marcuslull.aigm.data.ledger.LedgerDataHandler;
-import com.marcuslull.aigm.data.resonance.ResonanceDataHandler;
-import com.marcuslull.aigm.data.resonance.ingestion.DataIngestion;
-import com.marcuslull.aigm.gm.GmGroupCreator;
-import com.marcuslull.aigm.messaging.group.GroupMessageHandler;
-import com.marcuslull.aigm.messaging.player.PlayerMessageHandler;
-import com.marcuslull.aigm.router.CommunicationRouter;
-import com.marcuslull.aigm.tooling.diceRoller.DiceRoller;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.marcuslull.aigm.comms.Package;
+import com.marcuslull.aigm.comms.directory.Directory;
+import com.marcuslull.aigm.comms.infrastructure.AIGMPackage;
+import com.marcuslull.aigm.comms.infrastructure.AIGMPayload;
+import com.marcuslull.aigm.comms.infrastructure.AIGMRouterService;
+import com.marcuslull.aigm.comms.receivers.consoles.DeveloperConsoleService;
+import com.marcuslull.aigm.comms.receivers.data.StructuredDatabaseService;
+import com.marcuslull.aigm.comms.receivers.data.VectorDatabaseService;
+import com.marcuslull.aigm.comms.receivers.models.VertexAIModelService;
+import com.marcuslull.aigm.comms.receivers.tools.DiceRollerTool;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 @Service
 public class Runner implements CommandLineRunner {
 
-    private final ConfigurableApplicationContext context;
-    private final GmGroupCreator creator;
-    private final CommunicationRouter communicationRouter;
-    private final DataIngestion dataIngestion;
+    private final AIGMRouterService routerService;
+    private final DeveloperConsoleService devConsole;
+    private final StructuredDatabaseService sqlDatabase;
+    private final VectorDatabaseService vectorDatabase;
+    private final VertexAIModelService vertexAIModel;
+    private final DiceRollerTool diceRoller;
 
-    @Autowired
-    public Runner(ConfigurableApplicationContext context,
-                  DataIngestion dataIngestion,
-                  GmGroupCreator creator,
-                  CommunicationRouter communicationRouter) {
-        this.context = context;
-        this.dataIngestion = dataIngestion;
-        this.creator = creator;
-        this.communicationRouter = communicationRouter;
+    public Runner(AIGMRouterService routerService, DeveloperConsoleService devConsole, StructuredDatabaseService sqlDatabase, VectorDatabaseService vectorDatabase, VertexAIModelService vertexAIModel, DiceRollerTool diceRoller) {
+        this.routerService = routerService;
+        this.devConsole = devConsole;
+        this.sqlDatabase = sqlDatabase;
+        this.vectorDatabase = vectorDatabase;
+        this.vertexAIModel = vertexAIModel;
+        this.diceRoller = diceRoller;
     }
 
     @Override
     public void run(String... args) {
+        routerService.registerWithDirectory();
+        devConsole.registerWithDirectory();
+        sqlDatabase.registerWithDirectory();
+        vectorDatabase.registerWithDirectory();
+        vertexAIModel.registerWithDirectory();
+        diceRoller.registerWithDirectory();
 
-        // Vector DB data ingestion
-//        dataIngestion.ingest();
-
-        try {
-            if (initialize()) eventLoop();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private boolean initialize() {
-
-        // Create our AI clients and add them to our AI Group
-        creator.create();
-        System.out.println("\nGMs have been initialized...");
-
-        // Register the handlers for the different types of communication the AI group utilizes
-        communicationRouter.addHandler(context.getBean(PlayerMessageHandler.class));
-        communicationRouter.addHandler(context.getBean(GroupMessageHandler.class));
-        communicationRouter.addHandler(context.getBean(ResonanceDataHandler.class));
-        communicationRouter.addHandler(context.getBean(LedgerDataHandler.class));
-        communicationRouter.addHandler(context.getBean(DiceRoller.class));
-        System.out.println("Response handlers registered...");
-
-        System.out.println("\nWelcome to AI Game Master!");
-        return true;
-    }
-
-    private void eventLoop() {
-        communicationRouter.start();
+        Package pkg = new AIGMPackage(List.of(new AIGMPayload("dev", "orbis", new HashMap<>())));
+        routerService.route(pkg);
     }
 }

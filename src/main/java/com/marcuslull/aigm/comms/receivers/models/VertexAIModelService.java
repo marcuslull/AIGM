@@ -7,6 +7,8 @@ import com.marcuslull.aigm.comms.Router;
 import com.marcuslull.aigm.comms.Sender;
 import com.marcuslull.aigm.comms.directory.Directory;
 import com.marcuslull.aigm.comms.enums.AINameEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
@@ -21,6 +23,8 @@ import java.util.List;
 public class VertexAIModelService extends AbstractAIReceiver implements Sender {
 
     // from super: AINameEnum name, ChatModel chatModel
+
+    private final Logger logger = LoggerFactory.getLogger(VertexAIModelService.class);
 
     // receiver fields
     private ChatClient chatClient;
@@ -50,10 +54,7 @@ public class VertexAIModelService extends AbstractAIReceiver implements Sender {
 
     @Override
     public void handle(Payload payload) {
-        // TODO: convert to JSON
-        // TODO: escape JSON brackets
-        // TODO: deliver it to the model via chatClient with .entity(<?> implements Package)
-        // TODO: send(package)
+        logger.info("{} - Handling Payload: {}", this.getClass().getSimpleName(), payload.getUUID());
     }
 
     @Override
@@ -69,6 +70,7 @@ public class VertexAIModelService extends AbstractAIReceiver implements Sender {
 
     @Override
     public void registerWithDirectory() {
+        logger.info("{} - Registering with Directory", this.getClass().getSimpleName());
         Directory.addReceiver(this);
         Directory.addSender(this);
     }
