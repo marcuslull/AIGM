@@ -1,8 +1,11 @@
-package com.marcuslull.aigm.comms.receivers;
+package com.marcuslull.aigm.comms.receivers.models;
 
 import com.google.cloud.vertexai.VertexAI;
-import com.marcuslull.aigm.comms.*;
 import com.marcuslull.aigm.comms.Package;
+import com.marcuslull.aigm.comms.Payload;
+import com.marcuslull.aigm.comms.Router;
+import com.marcuslull.aigm.comms.Sender;
+import com.marcuslull.aigm.comms.directory.Directory;
 import com.marcuslull.aigm.comms.enums.AINameEnum;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -15,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class VertexAIModel extends AbstractAIReceiver implements Sender {
+public class VertexAIModelService extends AbstractAIReceiver implements Sender {
 
     // from super: AINameEnum name, ChatModel chatModel
 
@@ -30,7 +33,7 @@ public class VertexAIModel extends AbstractAIReceiver implements Sender {
     private List<Router> routers;
 
     @Autowired
-    public VertexAIModel(VertexAI vertexAI) {
+    public VertexAIModelService(VertexAI vertexAI) {
         super.chatModel = VertexAiGeminiChatModel.builder().vertexAI(vertexAI).build();
 
         this.advisors = List.of(new MessageChatMemoryAdvisor(new InMemoryChatMemory()));

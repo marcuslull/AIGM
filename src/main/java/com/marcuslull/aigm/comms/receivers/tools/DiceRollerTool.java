@@ -1,20 +1,23 @@
-package com.marcuslull.aigm.comms.receivers;
+package com.marcuslull.aigm.comms.receivers.tools;
 
-import com.marcuslull.aigm.comms.*;
 import com.marcuslull.aigm.comms.Package;
-import com.marcuslull.aigm.comms.enums.ConsoleNameEnum;
+import com.marcuslull.aigm.comms.Payload;
+import com.marcuslull.aigm.comms.Router;
+import com.marcuslull.aigm.comms.Sender;
+import com.marcuslull.aigm.comms.directory.Directory;
+import com.marcuslull.aigm.comms.enums.ToolNameEnum;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class DeveloperConsole extends AbstractConsoleReceiver implements Sender {
+public class DiceRollerTool extends AbstractToolReceiver implements Sender {
 
-    // from super: ConsoleNameEnum name, PrintStream printStream
+    // from super: ToolNameEnum name, List<Method> methods;
 
     @Override
     public boolean canHandle(Payload payload) {
-        return ConsoleNameEnum.fromString(payload.getReceiver()) == ConsoleNameEnum.DEV;
+        return ToolNameEnum.fromString(payload.getReceiver()) == ToolNameEnum.DICE;
     }
 
     @Override
@@ -29,7 +32,7 @@ public class DeveloperConsole extends AbstractConsoleReceiver implements Sender 
 
     @Override
     public void send(Package pkg) {
-        // send via getRouters
+        // TODO: send via getRouters()
     }
 
     @Override

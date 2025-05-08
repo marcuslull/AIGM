@@ -1,4 +1,4 @@
-package com.marcuslull.aigm.comms.receivers;
+package com.marcuslull.aigm.comms.receivers.consoles;
 
 import com.marcuslull.aigm.comms.Receiver;
 import com.marcuslull.aigm.comms.enums.ConsoleNameEnum;

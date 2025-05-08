@@ -1,20 +1,23 @@
-package com.marcuslull.aigm.comms.receivers;
+package com.marcuslull.aigm.comms.receivers.data;
 
-import com.marcuslull.aigm.comms.*;
 import com.marcuslull.aigm.comms.Package;
+import com.marcuslull.aigm.comms.Payload;
+import com.marcuslull.aigm.comms.Router;
+import com.marcuslull.aigm.comms.Sender;
+import com.marcuslull.aigm.comms.directory.Directory;
 import com.marcuslull.aigm.comms.enums.DataNameEnum;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class StructuredDatabase extends AbstractDataReceiver implements Sender {
+public class VectorDatabaseService extends AbstractDataReceiver implements Sender {
 
     // from super: DataNameEnum name, Map<String, String> connectionInformation, Map<String, String> queryProperties
 
     @Override
     public boolean canHandle(Payload payload) {
-        return DataNameEnum.fromString(payload.getReceiver()) == DataNameEnum.LEDGER;
+        return DataNameEnum.fromString(payload.getReceiver()) == DataNameEnum.RESONANCE;
     }
 
     @Override
@@ -29,7 +32,7 @@ public class StructuredDatabase extends AbstractDataReceiver implements Sender {
 
     @Override
     public void send(Package pkg) {
-        // TODO: Send using getRouters()
+        // TODO: select a router from getRouters() and send
     }
 
     @Override

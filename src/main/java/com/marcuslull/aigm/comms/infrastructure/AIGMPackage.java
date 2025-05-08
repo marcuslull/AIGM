@@ -1,10 +1,13 @@
-package com.marcuslull.aigm.comms;
+package com.marcuslull.aigm.comms.infrastructure;
+
+import com.marcuslull.aigm.comms.Package;
+import com.marcuslull.aigm.comms.Payload;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-public class AIGMPackage implements Package{
+public class AIGMPackage implements Package {
 
     private final UUID uuid;
     private final Instant created;

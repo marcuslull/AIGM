@@ -1,4 +1,8 @@
-package com.marcuslull.aigm.comms;
+package com.marcuslull.aigm.comms.directory;
+
+import com.marcuslull.aigm.comms.Receiver;
+import com.marcuslull.aigm.comms.Router;
+import com.marcuslull.aigm.comms.Sender;
 
 import java.util.ArrayList;
 import java.util.List;
