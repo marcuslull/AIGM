@@ -46,4 +46,15 @@ public class AIGMPayload implements Payload {
     public Map<String, String> getData() {
         return data;
     }
+
+    @Override
+    public String toString() {
+        return "AIGMPayload{" +
+                "uuid=" + uuid +
+                ", created=" + created +
+                ", receiver='" + receiver + '\'' +
+                ", sender='" + sender + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

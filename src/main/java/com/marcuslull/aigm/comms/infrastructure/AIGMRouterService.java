@@ -1,7 +1,6 @@
 package com.marcuslull.aigm.comms.infrastructure;
 
 import com.marcuslull.aigm.comms.Package;
-import com.marcuslull.aigm.comms.Payload;
 import com.marcuslull.aigm.comms.Receiver;
 import com.marcuslull.aigm.comms.Router;
 import com.marcuslull.aigm.comms.directory.Directory;
@@ -24,8 +23,10 @@ public class AIGMRouterService implements Router {
 
     @Override
     public void route(Package pkg) {
+        logger.info("{} - Processing Package: {}", this.getClass().getSimpleName(), pkg.getUUID());
+
         // match payloads to handlers
-        Optional.ofNullable(pkg) // take nothing for granted
+        Optional.of(pkg) // take nothing for granted
                 .ifPresent(pack -> pack.getPayload()
                         .forEach(payload -> getReceiverList()
                                 .stream()

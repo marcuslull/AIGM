@@ -1,7 +1,6 @@
 package com.marcuslull.aigm;
 
 import com.marcuslull.aigm.comms.Package;
-import com.marcuslull.aigm.comms.directory.Directory;
 import com.marcuslull.aigm.comms.infrastructure.AIGMPackage;
 import com.marcuslull.aigm.comms.infrastructure.AIGMPayload;
 import com.marcuslull.aigm.comms.infrastructure.AIGMRouterService;
@@ -13,7 +12,6 @@ import com.marcuslull.aigm.comms.receivers.tools.DiceRollerTool;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,7 +44,11 @@ public class Runner implements CommandLineRunner {
         vertexAIModel.registerWithDirectory();
         diceRoller.registerWithDirectory();
 
-        Package pkg = new AIGMPackage(List.of(new AIGMPayload("dev", "orbis", new HashMap<>())));
+        Package pkg = new AIGMPackage(List.of(
+                new AIGMPayload("dev", "orbis", new HashMap<>()),
+                new AIGMPayload("oratorix", "justivor", new HashMap<>()),
+                new AIGMPayload("ledger", "orbis", new HashMap<>()),
+                new AIGMPayload("dice", "orbis", new HashMap<>())));
         routerService.route(pkg);
     }
 }
