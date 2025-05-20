@@ -11,7 +11,6 @@ import com.marcuslull.aigm.comms.Sender;
 import com.marcuslull.aigm.comms.directory.Directory;
 import com.marcuslull.aigm.comms.enums.AINameEnum;
 import com.marcuslull.aigm.comms.infrastructure.AIGMPackage;
-import com.marcuslull.aigm.router.model.CommunicationPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
@@ -67,6 +66,7 @@ public class VertexAIModel extends AbstractAIReceiver implements Sender {
         // The AIs respond in markdown JSON
         try {
             String jsonString = objectMapper.writeValueAsString(payload); // convert to JSON
+            System.out.println(jsonString);
             Optional<Payload> response = Optional.ofNullable(this.chatClient.prompt().user(escapeJsonBrackets(jsonString)).call().entity(Payload.class));
             response.ifPresent(r -> send(new AIGMPackage(List.of(r))));
         } catch (JsonProcessingException e) {
@@ -88,7 +88,7 @@ public class VertexAIModel extends AbstractAIReceiver implements Sender {
 
     @Override
     public List<Router> getRouters() {
-        return routers;
+        return Directory.getRouters();
     }
 
     @Override

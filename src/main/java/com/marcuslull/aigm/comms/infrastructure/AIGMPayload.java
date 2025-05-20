@@ -1,11 +1,13 @@
 package com.marcuslull.aigm.comms.infrastructure;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.marcuslull.aigm.comms.Payload;
 
 import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 
+@JsonTypeName("AIGMPayload")
 public class AIGMPayload implements Payload {
 
     private final UUID uuid;
